@@ -1,0 +1,481 @@
+{
+  "name": "Minecraft",
+  "type": "Crossword",
+  "description": "Are you a fan of Minecraft? Test your knowledge!",
+  "cols": 20,
+  "rows": 20,
+  "version": 0,
+  "editorMode": {
+    "active": false,
+    "phase": 0
+  },
+  "answerKey": {
+    "B0": "Z",
+    "D0": "M",
+    "F0": "G",
+    "G0": "O",
+    "H0": "L",
+    "I0": "E",
+    "J0": "M",
+    "M0": "S",
+    "N0": "L",
+    "O0": "I",
+    "P0": "M",
+    "Q0": "E",
+    "B1": "O",
+    "D1": "E",
+    "G1": "B",
+    "I1": "Y",
+    "M1": "W",
+    "P1": "O",
+    "B2": "M",
+    "D2": "L",
+    "G2": "S",
+    "H2": "K",
+    "I2": "E",
+    "J2": "L",
+    "K2": "E",
+    "L2": "T",
+    "M2": "O",
+    "N2": "N",
+    "P2": "N",
+    "B3": "B",
+    "C3": "A",
+    "D3": "T",
+    "G3": "I",
+    "M3": "R",
+    "P3": "S",
+    "Q3": "L",
+    "R3": "E",
+    "S3": "E",
+    "T3": "P",
+    "B4": "I",
+    "D4": "E",
+    "G4": "D",
+    "H4": "I",
+    "I4": "A",
+    "J4": "M",
+    "K4": "O",
+    "L4": "N",
+    "M4": "D",
+    "P4": "T",
+    "R4": "L",
+    "T4": "O",
+    "A5": "L",
+    "B5": "E",
+    "C5": "A",
+    "D5": "D",
+    "G5": "I",
+    "J5": "I",
+    "L5": "E",
+    "P5": "E",
+    "R5": "Y",
+    "T5": "R",
+    "A6": "A",
+    "G6": "A",
+    "J6": "L",
+    "L6": "T",
+    "M6": "O",
+    "N6": "W",
+    "O6": "E",
+    "P6": "R",
+    "R6": "T",
+    "T6": "T",
+    "A7": "V",
+    "E7": "M",
+    "F7": "I",
+    "G7": "N",
+    "H7": "E",
+    "J7": "K",
+    "L7": "H",
+    "R7": "R",
+    "T7": "A",
+    "A8": "A",
+    "B8": "I",
+    "C8": "M",
+    "E8": "O",
+    "H8": "G",
+    "L8": "E",
+    "Q8": "T",
+    "R8": "A",
+    "S8": "I",
+    "T8": "L",
+    "C9": "I",
+    "E9": "U",
+    "H9": "G",
+    "K9": "C",
+    "L9": "R",
+    "M9": "E",
+    "N9": "E",
+    "O9": "P",
+    "P9": "E",
+    "Q9": "R",
+    "S9": "R",
+    "C10": "N",
+    "E10": "N",
+    "H10": "S",
+    "K10": "A",
+    "N10": "N",
+    "Q10": "I",
+    "S10": "O",
+    "A11": "C",
+    "B11": "H",
+    "C11": "E",
+    "D11": "S",
+    "E11": "T",
+    "K11": "V",
+    "N11": "D",
+    "O11": "R",
+    "P11": "A",
+    "Q11": "G",
+    "R11": "O",
+    "S11": "N",
+    "A12": "R",
+    "C12": "S",
+    "E12": "A",
+    "G12": "A",
+    "H12": "P",
+    "I12": "P",
+    "J12": "L",
+    "K12": "E",
+    "N12": "E",
+    "Q12": "G",
+    "A13": "O",
+    "C13": "H",
+    "E13": "I",
+    "G13": "R",
+    "I13": "H",
+    "L13": "S",
+    "M13": "P",
+    "N13": "R",
+    "O13": "U",
+    "P13": "C",
+    "Q13": "E",
+    "A14": "S",
+    "B14": "P",
+    "C14": "A",
+    "D14": "W",
+    "E14": "N",
+    "F14": "E",
+    "G14": "R",
+    "I14": "A",
+    "N14": "M",
+    "P14": "A",
+    "Q14": "R",
+    "R14": "M",
+    "S14": "O",
+    "T14": "R",
+    "A15": "S",
+    "C15": "F",
+    "G15": "O",
+    "I15": "N",
+    "L15": "G",
+    "M15": "H",
+    "N15": "A",
+    "O15": "S",
+    "P15": "T",
+    "R15": "E",
+    "T15": "O",
+    "A16": "B",
+    "C16": "T",
+    "D16": "H",
+    "E16": "R",
+    "F16": "O",
+    "G16": "W",
+    "I16": "T",
+    "L16": "O",
+    "N16": "N",
+    "R16": "L",
+    "T16": "C",
+    "A17": "O",
+    "E17": "A",
+    "G17": "S",
+    "H17": "H",
+    "I17": "O",
+    "J17": "V",
+    "K17": "E",
+    "L17": "L",
+    "Q17": "P",
+    "R17": "O",
+    "S17": "R",
+    "T17": "K",
+    "A18": "W",
+    "E18": "I",
+    "I18": "M",
+    "L18": "D",
+    "M18": "O",
+    "N18": "L",
+    "O18": "P",
+    "P18": "H",
+    "Q18": "I",
+    "R18": "N",
+    "T18": "E",
+    "B19": "T",
+    "C19": "R",
+    "D19": "I",
+    "E19": "D",
+    "F19": "E",
+    "G19": "N",
+    "H19": "T",
+    "Q19": "G",
+    "T19": "T"
+  },
+  "answers": {
+    "down-B0": {
+      "group": ["B0", "B1", "B2", "B3", "B4", "B5"],
+      "sum": "ZOMBIE",
+      "hint": "A common mob; a villager will become one if attacked by this."
+    },
+    "down-D0": {
+      "group": ["D0", "D1", "D2", "D3", "D4", "D5"],
+      "sum": "MELTED",
+      "hint": "Netherite cannot be _________ by lava."
+    },
+    "down-G0": {
+      "group": ["G0", "G1", "G2", "G3", "G4", "G5", "G6", "G7"],
+      "sum": "OBSIDIAN",
+      "hint": "One of the hardest blocks; made my pouring water on lava; requires a diamond (or better) pickaxe to mine."
+    },
+    "down-G12": {
+      "group": ["G12", "G13", "G14", "G15", "G16", "G17"],
+      "sum": "ARROWS",
+      "hint": "Bows and crossbows shoot these; ammunition."
+    },
+    "down-H7": {
+      "group": ["H7", "H8", "H9", "H10"],
+      "sum": "EGGS",
+      "hint": "Can be thrown at mobs (and players) if they don't hatch first."
+    },
+    "down-I0": {
+      "group": ["I0", "I1", "I2"],
+      "sum": "EYE",
+      "hint": "If you throw this Ender item it will teleport you to wherever it lands."
+    },
+    "down-I12": {
+      "group": ["I12", "I13", "I14", "I15", "I16", "I17", "I18"],
+      "sum": "PHANTOM",
+      "hint": "This mob flies around at night and will swoop down and hit you from behind; drops a Membrane when defeated."
+    },
+    "down-J4": {
+      "group": ["J4", "J5", "J6", "J7"],
+      "sum": "MILK",
+      "hint": "Drinking this will remove all status effects; can be stored in a bucket or a bottle."
+    },
+    "down-M0": {
+      "group": ["M0", "M1", "M2", "M3", "M4"],
+      "sum": "SWORD",
+      "hint": "A sharp weapon good for oofing mobs."
+    },
+    "down-N9": {
+      "group": ["N9", "N10", "N11", "N12", "N13", "N14", "N15", "N16"],
+      "sum": "ENDERMAN",
+      "hint": "A creepy dude who only attacks you if you look into his purple eyes."
+    },
+    "down-P0": {
+      "group": ["P0", "P1", "P2", "P3", "P4", "P5", "P6"],
+      "sum": "MONSTER",
+      "hint": "Another word for hostile (mean) mobs."
+    },
+    "down-P13": {
+      "group": ["P13", "P14", "P15"],
+      "sum": "CAT",
+      "hint": "A pet that brings you weird items in the morning; likes fish; Creepers hate this pet."
+    },
+    "down-Q8": {
+      "group": ["Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q14"],
+      "sum": "TRIGGER",
+      "hint": "A Flint and Steel is used to do this to items like TNT and Nether Portals; setting things on fire"
+    },
+    "down-Q17": {
+      "group": ["Q17", "Q18", "Q19"],
+      "sum": "PIG",
+      "hint": "A chubby animal that you can ride if you put an apple at the end of a fishing rod."
+    },
+    "down-K9": {
+      "group": ["K9", "K10", "K11", "K12"],
+      "sum": "CAVE",
+      "hint": "A dark place to mine, where mobs spawn."
+    },
+    "down-L4": {
+      "group": ["L4", "L5", "L6", "L7", "L8", "L9"],
+      "sum": "NETHER",
+      "hint": "A dark, creepy, hot place where the Hoglins and Zoglins roam free and Striders walk across the oceans of lava."
+    },
+    "down-L15": {
+      "group": ["L15", "L16", "L17", "L18"],
+      "sum": "GOLD",
+      "hint": "A block that is only valuable because you need it to make Netherite Ingots."
+    },
+    "down-C8": {
+      "group": ["C8", "C9", "C10", "C11", "C12", "C13", "C14", "C15", "C16"],
+      "sum": "MINESHAFT",
+      "hint": "A rare place deep inside most caves where loot is found and also poisonous Cave Spiders."
+    },
+    "down-R3": {
+      "group": ["R3", "R4", "R5", "R6", "R7", "R8"],
+      "sum": "ELYTRA",
+      "hint": "A rare piece of treasure that can only be found in an End City Ship; gives you the ability to fly (glide, really)."
+    },
+    "down-R14": {
+      "group": ["R14", "R15", "R16", "R17", "R18"],
+      "sum": "MELON",
+      "hint": "A green fruit that can be cut into slices with Shears; Water______."
+    },
+    "down-S8": {
+      "group": ["S8", "S9", "S10", "S11"],
+      "sum": "IRON",
+      "hint": "A useful item used to make strong armor and tools; Blocks of this can be used to make an Anvil or a Golem."
+    },
+    "down-T3": {
+      "group": ["T3", "T4", "T5", "T6", "T7", "T8"],
+      "sum": "PORTAL",
+      "hint": "There are two types of this: one that takes you to the Nether or to the End."
+    },
+    "down-T14": {
+      "group": ["T14", "T15", "T16", "T17", "T18", "T19"],
+      "sum": "ROCKET",
+      "hint": "Can be used as fireworks or to fly with Elytra."
+    },
+    "down-A5": {
+      "group": ["A5", "A6", "A7", "A8"],
+      "sum": "LAVA",
+      "hint": "Swimming in this will destroy you and whatever you are wearing; Having a bucket of water helps to deal with this obstacle."
+    },
+    "down-A11": {
+      "group": ["A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18"],
+      "sum": "CROSSBOW",
+      "hint": "One of the Piglin's favorite weapons; sort of like a Bow; shoots arrows."
+    },
+    "down-E7": {
+      "group": ["E7", "E8", "E9", "E10", "E11", "E12", "E13", "E14"],
+      "sum": "MOUNTAIN",
+      "hint": "A large natural structure; usually has snow on top."
+    },
+    "down-E16": {
+      "group": ["E16", "E17", "E18", "E19"],
+      "sum": "RAID",
+      "hint": "An attack by Pillagers that is announced by the sound of a horn; Pillagers attack in waves."
+    },
+    "across-F0": {
+      "group": ["F0", "G0", "H0", "I0", "J0"],
+      "sum": "GOLEM",
+      "hint": "One of these mobs protects villages; can be made with blocks of Iron."
+    },
+    "across-M0": {
+      "group": ["M0", "N0", "O0", "P0", "Q0"],
+      "sum": "SLIME",
+      "hint": "A green mob that bounces and drops a bouncy green block when it is defeated."
+    },
+    "across-G2": {
+      "group": ["G2", "H2", "I2", "J2", "K2", "L2", "M2", "N2"],
+      "sum": "SKELETON",
+      "hint": "An annoying mob made of white bones who uses a Bow and Arrows; a darker version uses a stone sword and inflicts Wither when it hits you."
+    },
+    "across-B3": {
+      "group": ["B3", "C3", "D3"],
+      "sum": "BAT",
+      "hint": "A passive mob that lives in caves and flies away if you place a torch near it."
+    },
+    "across-P3": {
+      "group": ["P3", "Q3", "R3", "S3", "T3"],
+      "sum": "SLEEP",
+      "hint": "The fastest way to turn night into day."
+    },
+    "across-G4": {
+      "group": ["G4", "H4", "I4", "J4", "K4", "L4", "M4"],
+      "sum": "DIAMOND",
+      "hint": "The second strongest type of tool in the game."
+    },
+    "across-A5": {
+      "group": ["A5", "B5", "C5", "D5"],
+      "sum": "LEAD",
+      "hint": "Another word for \"leash\", used by traders to keep their llamas from roaming off."
+    },
+    "across-L6": {
+      "group": ["L6", "M6", "N6", "O6", "P6"],
+      "sum": "TOWER",
+      "hint": "A structure made of blocks built up high."
+    },
+    "across-E7": {
+      "group": ["E7", "F7", "G7", "H7"],
+      "sum": "MINE",
+      "hint": "One of the main activities the player can do in Minecraft; the best way to get valuable ore."
+    },
+    "across-A8": {
+      "group": ["A8", "B8", "C8"],
+      "sum": "AIM",
+      "hint": "The only way to hit your enemy with an arrow from far away is to do this."
+    },
+    "across-Q8": {
+      "group": ["Q8", "R8", "S8", "T8"],
+      "sum": "TAIL",
+      "hint": "The best way to tell if a Wolf is healthy is to look at this part of it."
+    },
+    "across-K9": {
+      "group": ["K9", "L9", "M9", "N9", "O9", "P9", "Q9"],
+      "sum": "CREEPER",
+      "hint": "The most annoying creature in all of Minecraft, known for whispering \"BOOM\" in your ear when you least expect it."
+    },
+    "across-A11": {
+      "group": ["A11", "B11", "C11", "D11", "E11"],
+      "sum": "CHEST",
+      "hint": "A useful block to put other items in."
+    },
+    "across-N11": {
+      "group": ["N11", "O11", "P11", "Q11", "R11", "S11"],
+      "sum": "DRAGON",
+      "hint": "There is only one type of this mob in the whole game and it flies."
+    },
+    "across-G12": {
+      "group": ["G12", "H12", "I12", "J12", "K12"],
+      "sum": "APPLE",
+      "hint": "If turned into gold, it can be used to help turn a Zombie villager back into a regular villager."
+    },
+    "across-L13": {
+      "group": ["L13", "M13", "N13", "O13", "P13", "Q13"],
+      "sum": "SPRUCE",
+      "hint": "A type of dark brown tree that can grow in regular form or a large form if its saplings are placed in a 2x2 square arrangement."
+    },
+    "across-A14": {
+      "group": ["A14", "B14", "C14", "D14", "E14", "F14", "G14"],
+      "sum": "SPAWNER",
+      "hint": "A creepy little block with a flame in the middle and spits out a specific mob; often found in caves."
+    },
+    "across-P14": {
+      "group": ["P14", "Q14", "R14", "S14", "T14"],
+      "sum": "ARMOR",
+      "hint": "Wearing this makes it difficult for mobs to oof you; made of leather, gold, iron, diamond or Netherite."
+    },
+    "across-L15": {
+      "group": ["L15", "M15", "N15", "O15", "P15"],
+      "sum": "GHAST",
+      "hint": "A ghost squid that hates you for being you and reminds you that it hates you by squealing and shooting a fireball at your forehead."
+    },
+    "across-C16": {
+      "group": ["C16", "D16", "E16", "F16", "G16"],
+      "sum": "THROW",
+      "hint": "A Drowned will do this with its trident when it can't get your attention by shouting... while underwater."
+    },
+    "across-G17": {
+      "group": ["G17", "H17", "I17", "J17", "K17", "L17"],
+      "sum": "SHOVEL",
+      "hint": "The digging tool."
+    },
+    "across-Q17": {
+      "group": ["Q17", "R17", "S17", "T17"],
+      "sum": "PORK",
+      "hint": "Defeating a Hoglin with a flaming weapon will drop this food already cooked for you."
+    },
+    "across-L18": {
+      "group": ["L18", "M18", "N18", "O18", "P18", "Q18", "R18"],
+      "sum": "DOLPHIN",
+      "hint": "A friendly sea creature that will show you where to find underwater treasure in exchange for salmon."
+    },
+    "across-B19": {
+      "group": ["B19", "C19", "D19", "E19", "F19", "G19", "H19"],
+      "sum": "TRIDENT",
+      "hint": "A handy-dandy weapon that can be used in hand or thrown; not the greatest fork for eating salad."
+    }
+  },
+  "tags": ["videogame", "minecraft"]
+}

@@ -1,0 +1,243 @@
+{
+  "name": "Harry Potter",
+  "type": "Crossword",
+  "description": "A puzzle emanating from the Wonderful World of Wizardry!",
+  "cols": 20,
+  "rows": 20,
+  "version": 0,
+  "editorMode": {
+    "active": false,
+    "phase": 0
+  },
+  "answerKey": {
+    "J2": "B",
+    "G3": "H",
+    "H3": "A",
+    "I3": "R",
+    "J3": "R",
+    "K3": "Y",
+    "O3": "O",
+    "G4": "E",
+    "J4": "O",
+    "M4": "H",
+    "O4": "R",
+    "P4": "O",
+    "Q4": "N",
+    "F5": "D",
+    "G5": "R",
+    "H5": "A",
+    "I5": "C",
+    "J5": "O",
+    "M5": "A",
+    "O5": "D",
+    "G6": "M",
+    "J6": "M",
+    "K6": "U",
+    "L6": "G",
+    "M6": "G",
+    "N6": "L",
+    "O6": "E",
+    "G7": "I",
+    "M7": "R",
+    "O7": "R",
+    "B8": "D",
+    "G8": "O",
+    "M8": "I",
+    "B9": "U",
+    "F9": "S",
+    "G9": "N",
+    "H9": "A",
+    "I9": "P",
+    "J9": "E",
+    "M9": "D",
+    "B10": "M",
+    "G10": "E",
+    "I10": "O",
+    "Q10": "V",
+    "B11": "B",
+    "E11": "S",
+    "I11": "T",
+    "M11": "M",
+    "N11": "A",
+    "O11": "L",
+    "P11": "F",
+    "Q11": "O",
+    "R11": "Y",
+    "B12": "L",
+    "E12": "E",
+    "I12": "T",
+    "M12": "A",
+    "O12": "A",
+    "Q12": "L",
+    "B13": "E",
+    "E13": "C",
+    "F13": "U",
+    "G13": "R",
+    "H13": "S",
+    "I13": "E",
+    "J13": "D",
+    "M13": "G",
+    "O13": "N",
+    "Q13": "D",
+    "B14": "D",
+    "E14": "R",
+    "I14": "R",
+    "J14": "O",
+    "K14": "W",
+    "L14": "L",
+    "M14": "I",
+    "N14": "N",
+    "O14": "G",
+    "Q14": "E",
+    "A15": "G",
+    "B15": "O",
+    "C15": "B",
+    "D15": "L",
+    "E15": "E",
+    "F15": "T",
+    "J15": "B",
+    "M15": "C",
+    "O15": "U",
+    "Q15": "R",
+    "B16": "R",
+    "E16": "T",
+    "J16": "B",
+    "O16": "A",
+    "Q16": "M",
+    "B17": "E",
+    "E17": "S",
+    "J17": "Y",
+    "O17": "G",
+    "Q17": "O",
+    "O18": "E",
+    "Q18": "R",
+    "Q19": "T"
+  },
+  "answers": {
+    "down-J2": {
+      "group": ["J2", "J3", "J4", "J5", "J6"],
+      "sum": "BROOM",
+      "hint": "In Quidditch, each player rides on one of these."
+    },
+    "down-J13": {
+      "group": ["J13", "J14", "J15", "J16", "J17"],
+      "sum": "DOBBY",
+      "hint": "A meek little house elf that Harry Potter meets in The Chamber of Secrets."
+    },
+    "down-G3": {
+      "group": ["G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10"],
+      "sum": "HERMIONE",
+      "hint": "Harry's clever friend; she is half-Muggle."
+    },
+    "down-I9": {
+      "group": ["I9", "I10", "I11", "I12", "I13", "I14"],
+      "sum": "POTTER",
+      "hint": "Harry's last name."
+    },
+    "down-O3": {
+      "group": ["O3", "O4", "O5", "O6", "O7"],
+      "sum": "ORDER",
+      "hint": "Dumbledore's army to fight Voldermort's Death Eaters; The ________ of the Phoenix."
+    },
+    "down-O11": {
+      "group": ["O11", "O12", "O13", "O14", "O15", "O16", "O17", "O18"],
+      "sum": "LANGUAGE",
+      "hint": "Parseltongue is a ____________ used to speak to snakes."
+    },
+    "down-M4": {
+      "group": ["M4", "M5", "M6", "M7", "M8", "M9"],
+      "sum": "HAGRID",
+      "hint": "The friendly half-giant that comes to get Harry and take him to Hogwarts."
+    },
+    "down-M11": {
+      "group": ["M11", "M12", "M13", "M14", "M15"],
+      "sum": "MAGIC",
+      "hint": "Witches and wizards use this."
+    },
+    "down-Q10": {
+      "group": [
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14",
+        "Q15",
+        "Q16",
+        "Q17",
+        "Q18",
+        "Q19"
+      ],
+      "sum": "VOLDERMORT",
+      "hint": "He Who Must Not Be Named"
+    },
+    "down-B8": {
+      "group": [
+        "B8",
+        "B9",
+        "B10",
+        "B11",
+        "B12",
+        "B13",
+        "B14",
+        "B15",
+        "B16",
+        "B17"
+      ],
+      "sum": "DUMBLEDORE",
+      "hint": "The headmaster of Hogwarts."
+    },
+    "down-E11": {
+      "group": ["E11", "E12", "E13", "E14", "E15", "E16", "E17"],
+      "sum": "SECRETS",
+      "hint": "Book 2 is \"The Chamber of __________\""
+    },
+    "across-G3": {
+      "group": ["G3", "H3", "I3", "J3", "K3"],
+      "sum": "HARRY",
+      "hint": "The Boy Who Lived"
+    },
+    "across-O4": {
+      "group": ["O4", "P4", "Q4"],
+      "sum": "RON",
+      "hint": "Harry's headstrong friend; he has three other siblings; his last name is Weasley."
+    },
+    "across-F5": {
+      "group": ["F5", "G5", "H5", "I5", "J5"],
+      "sum": "DRACO",
+      "hint": "Harry Potter's main rival; his last name is Malfoy."
+    },
+    "across-J6": {
+      "group": ["J6", "K6", "L6", "M6", "N6", "O6"],
+      "sum": "MUGGLE",
+      "hint": "Regular humans that cannot use magic."
+    },
+    "across-F9": {
+      "group": ["F9", "G9", "H9", "I9", "J9"],
+      "sum": "SNAPE",
+      "hint": "Hogwarts' Defense Against the Dark Arts professor; His first name is Severus."
+    },
+    "across-M11": {
+      "group": ["M11", "N11", "O11", "P11", "Q11", "R11"],
+      "sum": "MALFOY",
+      "hint": "Draco __________."
+    },
+    "across-E13": {
+      "group": ["E13", "F13", "G13", "H13", "I13", "J13"],
+      "sum": "CURSED",
+      "hint": "The stage play following the book/film series; \"Harry Potter and the __________ Child\""
+    },
+    "across-I14": {
+      "group": ["I14", "J14", "K14", "L14", "M14", "N14", "O14"],
+      "sum": "ROWLING",
+      "hint": "The author of the Harry Potter series; J.K. ___________."
+    },
+    "across-A15": {
+      "group": ["A15", "B15", "C15", "D15", "E15", "F15"],
+      "sum": "GOBLET",
+      "hint": "Book 4 is \"Harry Potter and the _________ of Fire\", in which a tournament takes place."
+    }
+  },
+  "likes": 0,
+  "comments": [],
+  "tags": ["harry-potter", "sci-fi", "fantasy", "movie"]
+}
