@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 let MONGODB_URI =
   process.env.PROD_MONGODB ||

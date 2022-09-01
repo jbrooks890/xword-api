@@ -9,7 +9,6 @@ const main = async () => {
   await Puzzle.deleteMany({});
   await Comment.deleteMany({});
 
-  const commentsDB = [];
   const topLvlComments = comments.filter(
     comment => comment.ownerType === "puzzle"
   );
@@ -24,13 +23,21 @@ const main = async () => {
     })
   );
 
-  await Comment.insertMany(
+  const commentsDB = await Comment.insertMany(
     topLvlComments.map(comment => {
       let { owner } = comment;
       owner = puzzleDB.find(entry => entry.name === owner)._id;
       return { ...comment, owner };
     })
   );
+
+  for (let puzzle of puzzleDB) {
+    const commentIDs = commentsDB
+      .filter(comment => comment.owner.equals(puzzle._id))
+      .map(comment => comment._id);
+    puzzle.comments.push(...commentIDs);
+    await puzzle.save();
+  }
 
   console.log("Created puzzles!!!!!");
 };
