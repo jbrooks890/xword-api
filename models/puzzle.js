@@ -15,14 +15,15 @@ const Puzzle = new Schema(
       phase: { type: Number, required: true },
     },
     answerKey: { type: Map, of: String },
-    answers: {
-      type: Map,
-      of: {
+    answers: [
+      {
+        name: { type: String, required: true },
+        dir: { type: String, required: true },
         group: [{ type: String, required: true }],
         sum: { type: String, required: true },
         hint: { type: String, required: true },
       },
-    },
+    ],
     likes: { type: Number, required: false },
     comments: [
       { type: Schema.Types.ObjectId, ref: "comment", required: false },

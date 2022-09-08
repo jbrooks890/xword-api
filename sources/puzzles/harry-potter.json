@@ -113,48 +113,66 @@
     "Q18": "R",
     "Q19": "T"
   },
-  "answers": {
-    "down-J2": {
+  "answers": [
+    {
+      "name": "down-J2",
+      "dir": "down",
       "group": ["J2", "J3", "J4", "J5", "J6"],
       "sum": "BROOM",
       "hint": "In Quidditch, each player rides on one of these."
     },
-    "down-J13": {
+    {
+      "name": "down-J13",
+      "dir": "down",
       "group": ["J13", "J14", "J15", "J16", "J17"],
       "sum": "DOBBY",
       "hint": "A meek little house elf that Harry Potter meets in The Chamber of Secrets."
     },
-    "down-G3": {
+    {
+      "name": "down-G3",
+      "dir": "down",
       "group": ["G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10"],
       "sum": "HERMIONE",
       "hint": "Harry's clever friend; she is half-Muggle."
     },
-    "down-I9": {
+    {
+      "name": "down-I9",
+      "dir": "down",
       "group": ["I9", "I10", "I11", "I12", "I13", "I14"],
       "sum": "POTTER",
       "hint": "Harry's last name."
     },
-    "down-O3": {
+    {
+      "name": "down-O3",
+      "dir": "down",
       "group": ["O3", "O4", "O5", "O6", "O7"],
       "sum": "ORDER",
       "hint": "Dumbledore's army to fight Voldermort's Death Eaters; The ________ of the Phoenix."
     },
-    "down-O11": {
+    {
+      "name": "down-O11",
+      "dir": "down",
       "group": ["O11", "O12", "O13", "O14", "O15", "O16", "O17", "O18"],
       "sum": "LANGUAGE",
       "hint": "Parseltongue is a ____________ used to speak to snakes."
     },
-    "down-M4": {
+    {
+      "name": "down-M4",
+      "dir": "down",
       "group": ["M4", "M5", "M6", "M7", "M8", "M9"],
       "sum": "HAGRID",
       "hint": "The friendly half-giant that comes to get Harry and take him to Hogwarts."
     },
-    "down-M11": {
+    {
+      "name": "down-M11",
+      "dir": "down",
       "group": ["M11", "M12", "M13", "M14", "M15"],
       "sum": "MAGIC",
       "hint": "Witches and wizards use this."
     },
-    "down-Q10": {
+    {
+      "name": "down-Q10",
+      "dir": "down",
       "group": [
         "Q10",
         "Q11",
@@ -170,7 +188,9 @@
       "sum": "VOLDERMORT",
       "hint": "He Who Must Not Be Named"
     },
-    "down-B8": {
+    {
+      "name": "down-B8",
+      "dir": "down",
       "group": [
         "B8",
         "B9",
@@ -186,57 +206,77 @@
       "sum": "DUMBLEDORE",
       "hint": "The headmaster of Hogwarts."
     },
-    "down-E11": {
+    {
+      "name": "down-E11",
+      "dir": "down",
       "group": ["E11", "E12", "E13", "E14", "E15", "E16", "E17"],
       "sum": "SECRETS",
       "hint": "Book 2 is \"The Chamber of __________\""
     },
-    "across-G3": {
+    {
+      "name": "across-G3",
+      "dir": "across",
       "group": ["G3", "H3", "I3", "J3", "K3"],
       "sum": "HARRY",
       "hint": "The Boy Who Lived"
     },
-    "across-O4": {
+    {
+      "name": "across-O4",
+      "dir": "across",
       "group": ["O4", "P4", "Q4"],
       "sum": "RON",
       "hint": "Harry's headstrong friend; he has three other siblings; his last name is Weasley."
     },
-    "across-F5": {
+    {
+      "name": "across-F5",
+      "dir": "across",
       "group": ["F5", "G5", "H5", "I5", "J5"],
       "sum": "DRACO",
       "hint": "Harry Potter's main rival; his last name is Malfoy."
     },
-    "across-J6": {
+    {
+      "name": "across-J6",
+      "dir": "across",
       "group": ["J6", "K6", "L6", "M6", "N6", "O6"],
       "sum": "MUGGLE",
       "hint": "Regular humans that cannot use magic."
     },
-    "across-F9": {
+    {
+      "name": "across-F9",
+      "dir": "across",
       "group": ["F9", "G9", "H9", "I9", "J9"],
       "sum": "SNAPE",
       "hint": "Hogwarts' Defense Against the Dark Arts professor; His first name is Severus."
     },
-    "across-M11": {
+    {
+      "name": "across-M11",
+      "dir": "across",
       "group": ["M11", "N11", "O11", "P11", "Q11", "R11"],
       "sum": "MALFOY",
       "hint": "Draco __________."
     },
-    "across-E13": {
+    {
+      "name": "across-E13",
+      "dir": "across",
       "group": ["E13", "F13", "G13", "H13", "I13", "J13"],
       "sum": "CURSED",
       "hint": "The stage play following the book/film series; \"Harry Potter and the __________ Child\""
     },
-    "across-I14": {
+    {
+      "name": "across-I14",
+      "dir": "across",
       "group": ["I14", "J14", "K14", "L14", "M14", "N14", "O14"],
       "sum": "ROWLING",
       "hint": "The author of the Harry Potter series; J.K. ___________."
     },
-    "across-A15": {
+    {
+      "name": "across-A15",
+      "dir": "across",
       "group": ["A15", "B15", "C15", "D15", "E15", "F15"],
       "sum": "GOBLET",
       "hint": "Book 4 is \"Harry Potter and the _________ of Fire\", in which a tournament takes place."
     }
-  },
+  ],
   "likes": 0,
   "comments": [],
   "tags": ["harry-potter", "sci-fi", "fantasy", "movie"]
