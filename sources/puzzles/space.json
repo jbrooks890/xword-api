@@ -263,105 +263,105 @@
     },
     {
       "name": "across-G3",
-      "dir": "down",
+      "dir": "across",
       "group": ["G3", "H3", "I3", "J3", "K3"],
       "sum": "EARTH",
       "hint": "The only planet in the Milky Way currently known to be able to support human life."
     },
     {
       "name": "across-N3",
-      "dir": "down",
+      "dir": "across",
       "group": ["N3", "O3", "P3", "Q3", "R3", "S3"],
       "sum": "GALAXY",
       "hint": "The Milky Way"
     },
     {
       "name": "across-H5",
-      "dir": "down",
+      "dir": "across",
       "group": ["H5", "I5", "J5", "K5", "L5", "M5"],
       "sum": "SATURN",
       "hint": "A large gas giant planet circled by rings of asteroids."
     },
     {
       "name": "across-O5",
-      "dir": "down",
+      "dir": "across",
       "group": ["O5", "P5", "Q5", "R5"],
       "sum": "STAR",
       "hint": "A celestial body that emits light."
     },
     {
       "name": "across-B7",
-      "dir": "down",
+      "dir": "across",
       "group": ["B7", "C7", "D7"],
       "sum": "GAS",
       "hint": "The largest planets in the Milky Way solar system are known as this type of giant."
     },
     {
       "name": "across-M7",
-      "dir": "down",
+      "dir": "across",
       "group": ["M7", "N7", "O7", "P7", "Q7", "R7"],
       "sum": "PLANET",
       "hint": "A large celestial body that orbits a star."
     },
     {
       "name": "across-E8",
-      "dir": "down",
+      "dir": "across",
       "group": ["E8", "F8", "G8", "H8", "I8"],
       "sum": "SPACE",
       "hint": "The highway between planets."
     },
     {
       "name": "across-G10",
-      "dir": "down",
+      "dir": "across",
       "group": ["G10", "H10", "I10", "J10", "K10", "L10", "M10"],
       "sum": "MARTIAN",
       "hint": "A word to describe anything associated with the planet Mars."
     },
     {
       "name": "across-A11",
-      "dir": "down",
+      "dir": "across",
       "group": ["A11", "B11", "C11", "D11", "E11"],
       "sum": "VENUS",
       "hint": "The Roman goddess of love."
     },
     {
       "name": "across-I13",
-      "dir": "down",
+      "dir": "across",
       "group": ["I13", "J13", "K13", "L13", "M13", "N13", "O13", "P13"],
       "sum": "MILKYWAY",
       "hint": "The candy bar that stole its name from our galaxy."
     },
     {
       "name": "across-A14",
-      "dir": "down",
+      "dir": "across",
       "group": ["A14", "B14", "C14", "D14", "E14"],
       "sum": "ASTRO",
       "hint": "A prefix to describe things associated with space and celestial bodies."
     },
     {
       "name": "across-E15",
-      "dir": "down",
+      "dir": "across",
       "group": ["E15", "F15", "G15", "H15", "I15"],
       "sum": "LUNAR",
       "hint": "Describes anything associated with the Moon."
     },
     {
       "name": "across-O16",
-      "dir": "down",
+      "dir": "across",
       "group": ["O16", "P16", "Q16", "R16", "S16"],
       "sum": "SOLAR",
       "hint": "Describes anything associated with the Sun."
     },
     {
       "name": "across-H17",
-      "dir": "down",
+      "dir": "across",
       "group": ["H17", "I17", "J17", "K17", "L17", "M17", "N17"],
       "sum": "JUPITER",
       "hint": "The largest planet in the Milky Way galaxy; has a giant red spot."
     },
     {
       "name": "across-C18",
-      "dir": "down",
+      "dir": "across",
       "group": ["C18", "D18", "E18"],
       "sum": "DAY",
       "hint": "One rotation of the Earth."
