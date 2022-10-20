@@ -22,6 +22,16 @@ const getPuzzle = async (req, res) => {
   }
 };
 
+const createPuzzle = async (req, res) => {
+  try {
+    const puzzle = await new Puzzle({ ...req.body, likes: 0, comments: [] });
+    await puzzle.save();
+    return res.status(201).json({ puzzle });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 const createComment = async (req, res) => {
   const { owner: owner_id } = req.body;
   try {
@@ -86,6 +96,7 @@ const deleteComment = async (req, res) => {
 module.exports = {
   getAllPuzzles,
   getPuzzle,
+  createPuzzle,
   createComment,
   getAllComments,
   getCommentById,
