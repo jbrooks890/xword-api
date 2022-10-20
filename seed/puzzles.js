@@ -40,6 +40,7 @@ const main = async () => {
   }
 
   console.log("Created puzzles!!!!!");
+  console.log("SEEDING NEW VERSION OF PUZZLES")
 };
 
 const run = async () => {
