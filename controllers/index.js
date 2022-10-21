@@ -69,6 +69,18 @@ const getCommentById = async (req, res) => {
   }
 };
 
+const getCommentsByPuzzleId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const comments = await Comment.find({ owner: id }); // TODO
+    return comments
+      ? res.status(200).json({ comments })
+      : res.status(404).send("Search has no results");
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 const updateComment = (req, res) => {
   const { id } = req.params;
   try {
@@ -100,6 +112,7 @@ module.exports = {
   createComment,
   getAllComments,
   getCommentById,
+  getCommentsByPuzzleId,
   updateComment,
   deleteComment,
 };

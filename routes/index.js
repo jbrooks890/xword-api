@@ -3,9 +3,11 @@ const router = Router();
 const {
   getAllPuzzles,
   getPuzzle,
+  createPuzzle,
   createComment,
   getAllComments,
   getCommentById,
+  getCommentsByPuzzleId,
   updateComment,
   deleteComment,
 } = require("../controllers");
@@ -16,6 +18,7 @@ router.get("/", (req, res) => res.send("This is the root."));
 router.get("/puzzles", getAllPuzzles);
 router.get("/puzzles/:id", getPuzzle);
 // ------------ COMMENTS ------------
+router.get("/puzzle/comments/:id", getCommentsByPuzzleId);
 router.post("/comments", createComment);
 router.get("/comments", getAllComments);
 router.get("/comments/:id", getCommentById);
