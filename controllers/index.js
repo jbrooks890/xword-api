@@ -32,6 +32,29 @@ const createPuzzle = async (req, res) => {
   }
 };
 
+const updatePuzzle = (req, res) => {
+  const { id } = req.params;
+  try {
+    Puzzle.findByIdAndUpdate(id, req.body, { new: true }, (err, puzzle) => {
+      if (err) return res.status(500).send(err);
+      if (!puzzle) return res.status(500).send("Puzzle not found");
+      return res.status(200).json(puzzle);
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const deletePuzzle = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleted = await Puzzle.findByIdAndDelete(id);
+    if (deleted) return res.status(200).send(`Puzzle successfully deleted`);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 const createComment = async (req, res) => {
   const { owner: owner_id } = req.body;
   try {
@@ -109,6 +132,8 @@ module.exports = {
   getAllPuzzles,
   getPuzzle,
   createPuzzle,
+  updatePuzzle,
+  deletePuzzle,
   createComment,
   getAllComments,
   getCommentById,

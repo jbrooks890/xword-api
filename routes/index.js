@@ -4,6 +4,8 @@ const {
   getAllPuzzles,
   getPuzzle,
   createPuzzle,
+  updatePuzzle,
+  deletePuzzle,
   createComment,
   getAllComments,
   getCommentById,
@@ -15,8 +17,11 @@ const {
 // ------------ ROOT ------------
 router.get("/", (req, res) => res.send("This is the root."));
 // ------------ PUZZLES ------------
+router.post("/puzzles", createPuzzle);
 router.get("/puzzles", getAllPuzzles);
 router.get("/puzzles/:id", getPuzzle);
+router.put("/puzzles/:id", updatePuzzle);
+router.delete("/puzzles/:id", deletePuzzle);
 // ------------ COMMENTS ------------
 router.get("/puzzle/comments/:id", getCommentsByPuzzleId);
 router.post("/comments", createComment);
