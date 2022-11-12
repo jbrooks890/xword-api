@@ -6,16 +6,27 @@ require("dotenv").config();
 const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 
 const generateToken = user =>
-  jwt.sign(user, ACCESS_TOKEN, { expiresIn: "10m" });
+  jwt.sign(user, ACCESS_TOKEN, { expiresIn: "15m" });
 
 // <><><><><><><><><> CREATE NEW USER <><><><><><><><><>
 
 const createUser = async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password)
+    return res.status(400).json({ message: "Username and password required." });
+
+  const duplicate = await User.findOne({ username }).exec();
+  if (duplicate) return res.sendStatus(409); // Conflict
+
   try {
-    const hash = await bcrypt.hash(req.body.password, 10);
-    const user = await new User({ ...req.body, password: hash });
-    await user.save();
-    return res.status(201).send();
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      ...req.body,
+      password: hash,
+    });
+    return res
+      .status(201)
+      .json({ success: `New user ${user.username} created!` });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -25,41 +36,60 @@ const createUser = async (req, res) => {
 
 const validateUser = async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
+  if (!username || !password)
+    return res.status(400).json({ message: "Username and password required." });
 
+  const user = await User.findOne({ username });
   if (!user) return res.status(400).send("User does not exist.");
 
   try {
     if (await bcrypt.compare(password, user.password)) {
-      const $user = { username, password: user.password };
-      const accessToken = generateToken($user);
-      const refreshToken = jwt.sign($user, REFRESH_TOKEN);
-      res.status(201).json({ accessToken, refreshToken });
+      const accessToken = generateToken({ username });
+      const refreshToken = jwt.sign({ username }, REFRESH_TOKEN, {
+        expiresIn: "1d",
+      });
+      user.refreshToken = refreshToken;
+      user.save();
+      res.cookie("jwt", refreshToken, {
+        httpOnly: true, // inaccessible with json
+        // sameSite: "none",
+        // secure: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      res.status(201).json({ accessToken });
     } else {
-      req.send("Invalid user");
+      req.status(401).json({ message: "Invalid user" });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// <><><><><><><><><> DEAUTH REFRESH TOKEN <><><><><><><><><>
+// <><><><><><><><><> DEAUTH REFRESH TOKEN (on logout) <><><><><><><><><>
 
-const deauthToken = (req, res) => {
-  const { token } = req.body;
-  try {
-    // TODO: find token and delete
-    res.sendStatus(204);
-  } catch (err) {
-    req.status(500).json({ error: err.message });
+const deAuth = async (req, res) => {
+  const { cookies } = req;
+  if (!cookies?.jwt) return res.sendStatus(204);
+  const refreshToken = cookies.jwt;
+  const user = await User.findOne({ refreshToken });
+  if (!user) {
+    res.clearCookie("jwt", { httpOnly: true }); // requires same OPTIONS it was set wtih, except 'maxAge' and expires
+    return res.sendStatus(204);
   }
+  user.refreshToken = "";
+  await user.save();
+  res.clearCookie("jwt", { httpOnly: true }); //secure: truly - only serves on https
+  res.sendStatus(204);
 };
 
 // <><><><><><><><><> AUTHENTICATE TOKEN (MIDDLE) <><><><><><><><><>
+// middleware for protected routes
 
-const $authenticateToken = (req, res, next) => {
+const authenticate = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  if (!authHeader) return res.sendStatus(401);
+
+  const token = authHeader.split(" ")[1];
   if (token === null) return res.sendStatus(401);
 
   jwt.verify(token, ACCESS_TOKEN, (err, user) => {
@@ -71,13 +101,20 @@ const $authenticateToken = (req, res, next) => {
 
 // <><><><><><><><><> VERIFY TOKEN (MIDDLE) <><><><><><><><><>
 
-const verifyRefreshToken = (req, res) => {
-  const refreshToken = req.body.token;
-  if (!refreshToken) return res.sendStatus(401);
+const refreshAuth = (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) return res.sendStatus(401);
+  console.log(cookies.jwt);
+
+  // const refreshToken = req.body.token;
+  const refreshToken = cookies.jwt;
+  const user = User.findOne({ refreshToken });
   // TODO: if database doesn't include the refreshtoken, return 403
-  jwt.verify(refreshToken, REFRESH_TOKEN, (err, user) => {
-    if (err) return res.sendStatus(403);
-    const accessToken = generateToken({ name: user.name });
+  if (!user) return res.sendStatus(403);
+
+  jwt.verify(refreshToken, REFRESH_TOKEN, (err, decoded) => {
+    if (err || user.username !== decoded.username) return res.sendStatus(403);
+    const accessToken = generateToken({ username: decoded.username });
     res.json({ accessToken });
   });
 };
@@ -86,4 +123,10 @@ const verifyRefreshToken = (req, res) => {
 // <><><><><><><><><><><><><><> EXPORT <><><><><><><><><><><><><><>
 // ----------------------------------------------------------------
 
-module.exports = { createUser, validateUser };
+module.exports = {
+  createUser,
+  validateUser,
+  authenticate,
+  refreshAuth,
+  deAuth,
+};

@@ -8,6 +8,15 @@ const User = new Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: { type: String, required: true },
+    roles: {
+      User: {
+        type: Number,
+        default: 2001,
+      },
+      Editor: Number,
+      Admin: Number,
+    },
+    refreshToken: String,
   },
   { timestamps: true }
 );

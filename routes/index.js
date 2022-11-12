@@ -14,6 +14,9 @@ const {
   deleteComment,
   createUser,
   validateUser,
+  authenticate,
+  refreshAuth,
+  deAuth,
 } = require("../controllers");
 const User = require("../models/user"); //TODO
 
@@ -52,5 +55,8 @@ router.get("/users/:username", async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 });
+// ------------ AUTH ------------
+router.post("/auth", authenticate);
+router.get("/logout", deAuth); // LOGOUT
 
 module.exports = router;
