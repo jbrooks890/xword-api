@@ -13,12 +13,16 @@ const {
   updateComment,
   deleteComment,
   createUser,
-  validateUser,
+  getAllUsers,
+  getUserByUsername,
+  login,
   authenticate,
   refreshAuth,
   deAuth,
+  verifyRoles,
 } = require("../controllers");
-const User = require("../models/user"); //TODO
+const { user_roles } = require("../config/user_roles");
+const { Admin, Editor, User } = user_roles;
 
 // ------------ ROOT ------------
 router.get("/", (req, res) => res.send("This is the root."));
@@ -36,27 +40,15 @@ router.get("/comments/:id", getCommentById);
 router.put("/comments/:id", updateComment);
 router.delete("/comments/:id", deleteComment);
 // ------------ USER ------------
+router.post("/login", login);
 router.post("/users", createUser);
-router.post("/login", validateUser);
-router.get("/users", async (req, res) => {
-  try {
-    const users = await User.find({});
-    return res.status(200).json({ users });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-});
-router.get("/users/:username", async (req, res) => {
-  const { username } = req.params;
-  try {
-    const user = await User.find({ username });
-    return res.status(200).json({ user });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-});
+router.get("/refresh", refreshAuth);
+router.get("/logout", deAuth);
+
 // ------------ AUTH ------------
-router.post("/auth", authenticate);
-router.get("/logout", deAuth); // LOGOUT
+router.use(authenticate); // <=== GATEKEEPER
+router.use(verifyRoles(Admin));
+router.get("/users", getAllUsers);
+router.get("/users/:username", getUserByUsername);
 
 module.exports = router;

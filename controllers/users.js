@@ -1,12 +1,16 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 
-const generateToken = user =>
-  jwt.sign(user, ACCESS_TOKEN, { expiresIn: "15m" });
+const generateToken = user => {
+  const { username, roles: $roles } = user;
+  const roles = Object.values($roles);
+  return jwt.sign({ credentials: { username, roles } }, ACCESS_TOKEN, {
+    expiresIn: "15m", // TODO: expires ==> 15m
+  });
+};
 
 // <><><><><><><><><> CREATE NEW USER <><><><><><><><><>
 
@@ -32,9 +36,32 @@ const createUser = async (req, res) => {
   }
 };
 
+// <><><><><><><><><> GET ALL USERS <><><><><><><><><>
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    return res.status(200).json({ users });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+// <><><><><><><><><> GET USER BY USERNAME <><><><><><><><><>
+
+const getUserByUsername = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await User.find({ username });
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 // <><><><><><><><><> VALIDATE USER (on login) <><><><><><><><><>
 
-const validateUser = async (req, res) => {
+const login = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ message: "Username and password required." });
@@ -44,7 +71,9 @@ const validateUser = async (req, res) => {
 
   try {
     if (await bcrypt.compare(password, user.password)) {
-      const accessToken = generateToken({ username });
+      console.log("password successful");
+      // const roles = Object.values(user.roles);
+      const accessToken = generateToken(user);
       const refreshToken = jwt.sign({ username }, REFRESH_TOKEN, {
         expiresIn: "1d",
       });
@@ -73,8 +102,9 @@ const deAuth = async (req, res) => {
   const refreshToken = cookies.jwt;
   const user = await User.findOne({ refreshToken });
   if (!user) {
-    res.clearCookie("jwt", { httpOnly: true }); // requires same OPTIONS it was set wtih, except 'maxAge' and expires
-    return res.sendStatus(204);
+    // NOTE: requires same OPTIONS it was set wtih, except 'maxAge' and expires
+    res.clearCookie("jwt", { httpOnly: true });
+    return res.sendStatus(204); // NO CONTENT
   }
   user.refreshToken = "";
   await user.save();
@@ -86,37 +116,55 @@ const deAuth = async (req, res) => {
 // middleware for protected routes
 
 const authenticate = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  if (!authHeader) return res.sendStatus(401);
+  const authHeader = req.headers.authorization || req.headers.Authorization; // Bearer <TOKEN>
+  if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401); // UNAUTHORIZED
 
   const token = authHeader.split(" ")[1];
-  if (token === null) return res.sendStatus(401);
+  if (!token) return res.sendStatus(401); // UNAUTHORIZED
 
-  jwt.verify(token, ACCESS_TOKEN, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
+  jwt.verify(token, ACCESS_TOKEN, (err, decoded) => {
+    if (err) return res.sendStatus(403); // FORBIDDEN
+    req.username = decoded.credentials.username;
+    req.roles = decoded.credentials.roles;
     next();
   });
 };
 
-// <><><><><><><><><> VERIFY TOKEN (MIDDLE) <><><><><><><><><>
+// <><><><><><><><><> REFRESH AUTHORIZATION <><><><><><><><><>
 
-const refreshAuth = (req, res) => {
+const refreshAuth = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(401);
-  console.log(cookies.jwt);
+  // console.log(cookies.jwt);
 
-  // const refreshToken = req.body.token;
   const refreshToken = cookies.jwt;
-  const user = User.findOne({ refreshToken });
-  // TODO: if database doesn't include the refreshtoken, return 403
-  if (!user) return res.sendStatus(403);
+  const user = await User.findOne({ refreshToken });
+  if (!user) return res.sendStatus(403); // FORBIDDEN
+  // console.log("\n$$$ USER:", user, "\n");
 
   jwt.verify(refreshToken, REFRESH_TOKEN, (err, decoded) => {
     if (err || user.username !== decoded.username) return res.sendStatus(403);
-    const accessToken = generateToken({ username: decoded.username });
+    const accessToken = generateToken(user);
     res.json({ accessToken });
   });
+};
+
+// <><><><><><><><><> VERIFY ROLES (MIDDLE) <><><><><><><><><>
+
+const verifyRoles = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req?.roles) return res.sendStatus(401); // UNAUTHORIZED
+    const rolesArr = [...allowedRoles];
+    // console.log(rolesArr);
+    // console.log(req.roles);
+
+    const result = req.roles
+      .map(role => rolesArr.includes(role))
+      .find(val => val === true);
+
+    if (!result) return res.sendStatus(401); // UNAUTHORIZED
+    next();
+  };
 };
 
 // ----------------------------------------------------------------
@@ -125,8 +173,11 @@ const refreshAuth = (req, res) => {
 
 module.exports = {
   createUser,
-  validateUser,
+  getAllUsers,
+  getUserByUsername,
+  login,
   authenticate,
   refreshAuth,
   deAuth,
+  verifyRoles,
 };
