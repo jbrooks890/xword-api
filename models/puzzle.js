@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const Puzzle = new Schema(
   {
+    author: { type: Schema.Types.ObjectId, ref: "user", required: true },
     name: { type: String, required: true },
     type: { type: String, required: true },
     description: { type: String, required: true },

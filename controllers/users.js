@@ -103,9 +103,11 @@ const deAuth = async (req, res) => {
   const user = await User.findOne({ refreshToken });
   if (!user) {
     // NOTE: requires same OPTIONS it was set wtih, except 'maxAge' and expires
+    // TODO: delete access token on front end
     res.clearCookie("jwt", { httpOnly: true });
     return res.sendStatus(204); // NO CONTENT
   }
+  // TODO: delete access token on front end
   user.refreshToken = "";
   await user.save();
   res.clearCookie("jwt", { httpOnly: true }); //secure: truly - only serves on https
@@ -155,8 +157,6 @@ const verifyRoles = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req?.roles) return res.sendStatus(401); // UNAUTHORIZED
     const rolesArr = [...allowedRoles];
-    // console.log(rolesArr);
-    // console.log(req.roles);
 
     const result = req.roles
       .map(role => rolesArr.includes(role))
