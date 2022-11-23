@@ -44,11 +44,11 @@ router.post("/login", login);
 router.post("/users", createUser);
 router.get("/refresh", refreshAuth);
 router.get("/logout", deAuth);
+router.get("/users/:username", getUserByUsername);
 
 // ------------ AUTH ------------
 router.use(authenticate); // <=== GATEKEEPER
 router.use(verifyRoles(Admin));
 router.get("/users", getAllUsers);
-router.get("/users/:username", getUserByUsername);
 
 module.exports = router;

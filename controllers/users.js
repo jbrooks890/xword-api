@@ -5,19 +5,25 @@ const jwt = require("jsonwebtoken");
 const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 
 const generateToken = user => {
-  const { username, roles: $roles } = user;
+  const { username, firstName, lastName, roles: $roles } = user;
   const roles = Object.values($roles);
-  return jwt.sign({ credentials: { username, roles } }, ACCESS_TOKEN, {
-    expiresIn: "15m", // TODO: expires ==> 15m
-  });
+  return jwt.sign(
+    { credentials: { username, firstName, lastName, roles } },
+    ACCESS_TOKEN,
+    {
+      expiresIn: "15m", // TODO: expires ==> 15m
+    }
+  );
 };
 
 // <><><><><><><><><> CREATE NEW USER <><><><><><><><><>
 
 const createUser = async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password)
-    return res.status(400).json({ message: "Username and password required." });
+  const { username, password, email } = req.body;
+  if (!username || !password || !email)
+    return res
+      .status(400)
+      .json({ message: "Username, password and email required." });
 
   const duplicate = await User.findOne({ username }).exec();
   if (duplicate) return res.sendStatus(409); // Conflict
@@ -52,7 +58,7 @@ const getAllUsers = async (req, res) => {
 const getUserByUsername = async (req, res) => {
   const { username } = req.params;
   try {
-    const user = await User.find({ username });
+    const user = await User.findOne({ username });
     return res.status(200).json({ user });
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -62,17 +68,17 @@ const getUserByUsername = async (req, res) => {
 // <><><><><><><><><> VALIDATE USER (on login) <><><><><><><><><>
 
 const login = async (req, res) => {
+  // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ message: "Username and password required." });
+  console.log({ username });
 
   const user = await User.findOne({ username });
   if (!user) return res.status(400).send("User does not exist.");
 
   try {
     if (await bcrypt.compare(password, user.password)) {
-      console.log("password successful");
-      // const roles = Object.values(user.roles);
       const accessToken = generateToken(user);
       const refreshToken = jwt.sign({ username }, REFRESH_TOKEN, {
         expiresIn: "1d",
@@ -81,10 +87,9 @@ const login = async (req, res) => {
       user.save();
       res.cookie("jwt", refreshToken, {
         httpOnly: true, // inaccessible with json
-        // sameSite: "none",
-        // secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
+      // res.send();
       res.status(201).json({ accessToken });
     } else {
       req.status(401).json({ message: "Invalid user" });
@@ -135,12 +140,15 @@ const authenticate = (req, res, next) => {
 // <><><><><><><><><> REFRESH AUTHORIZATION <><><><><><><><><>
 
 const refreshAuth = async (req, res) => {
+  // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(401);
   // console.log(cookies.jwt);
 
   const refreshToken = cookies.jwt;
+
   const user = await User.findOne({ refreshToken });
+
   if (!user) return res.sendStatus(403); // FORBIDDEN
   // console.log("\n$$$ USER:", user, "\n");
 
