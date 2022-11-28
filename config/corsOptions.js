@@ -11,6 +11,7 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: (origin, callback) => {
+    console.log({ origin });
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -21,6 +22,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-console.log("allowed origins:", allowedOrigins, "\ncors config:", corsOptions);
+// console.log("allowed origins:", allowedOrigins, "\ncors config:", corsOptions); //TODO
 
 module.exports = { corsOptions };
