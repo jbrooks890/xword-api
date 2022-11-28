@@ -25,7 +25,7 @@ const { user_roles } = require("../config/user_roles");
 const { Admin, Editor, User } = user_roles;
 
 // ------------ ROOT ------------
-// router.get("/", (req, res) => res.send("This is the root."));
+router.get("/", (req, res) => res.send("This is the root."));
 // ------------ PUZZLES ------------
 router.post("/puzzles", createPuzzle);
 router.get("/puzzles", getAllPuzzles);
