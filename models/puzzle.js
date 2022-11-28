@@ -25,7 +25,7 @@ const Puzzle = new Schema(
         hint: { type: String, required: true },
       },
     ],
-    likes: { type: Number, default: 0, required: false },
+    likes: [{ type: Schema.Types.ObjectId, ref: "user", required: false }],
     comments: [
       { type: Schema.Types.ObjectId, ref: "comment", required: false },
     ],
