@@ -1,6 +1,7 @@
 const db = require("../db");
 const Puzzle = require("../models/puzzle");
 const Comment = require("../models/comment");
+const User = require("../models/user");
 const { puzzles, comments } = require("../sources");
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
@@ -17,9 +18,11 @@ const main = async () => {
     comment => comment.ownerType !== "puzzle"
   );
 
+  const master = await User.findOne({ username: "jbrooks" });
+
   const puzzleDB = await Puzzle.insertMany(
     puzzles.map(puzzle => {
-      return { ...puzzle, likes: 0, comments: [] };
+      return { ...puzzle, author: master._id };
     })
   );
 
@@ -40,7 +43,7 @@ const main = async () => {
   }
 
   console.log("Created puzzles!!!!!");
-  console.log("SEEDING NEW VERSION OF PUZZLES")
+  console.log("SEEDING NEW VERSION OF PUZZLES");
 };
 
 const run = async () => {

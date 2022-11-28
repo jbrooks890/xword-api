@@ -41,6 +41,32 @@ const createUser = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+// <><><><><><><><><> CREATE NEW ADMIN <><><><><><><><><>
+
+const createAdmin = async (req, res) => {
+  const { username, password, email } = req.body;
+  if (!username || !password || !email)
+    return res
+      .status(400)
+      .json({ message: "Username, password and email required." });
+
+  const duplicate = await User.findOne({ username }).exec();
+  if (duplicate) return res.sendStatus(409); // Conflict
+
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      ...req.body,
+      password: hash,
+      roles: { User: 8737, Editor: 3348, Admin: 2366 },
+    });
+    return res
+      .status(201)
+      .json({ success: `New admin ${user.username} created!` });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
 
 // <><><><><><><><><> GET ALL USERS <><><><><><><><><>
 
@@ -181,6 +207,7 @@ const verifyRoles = (...allowedRoles) => {
 
 module.exports = {
   createUser,
+  createAdmin,
   getAllUsers,
   getUserByUsername,
   login,
