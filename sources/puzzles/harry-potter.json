@@ -5,10 +5,6 @@
   "cols": 20,
   "rows": 20,
   "version": 0,
-  "editorMode": {
-    "active": false,
-    "phase": 0
-  },
   "answerKey": {
     "J2": "B",
     "G3": "H",
@@ -277,7 +273,5 @@
       "hint": "Book 4 is \"Harry Potter and the _________ of Fire\", in which a tournament takes place."
     }
   ],
-  "likes": 0,
-  "comments": [],
   "tags": ["harry-potter", "sci-fi", "fantasy", "movie"]
 }
