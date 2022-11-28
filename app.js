@@ -14,7 +14,7 @@ app.use(express.json()); // USE()?
 app.use(express.urlencoded({ extended: false }));
 app.use(logger("dev"));
 app.use(cookieParser());
-app.get("/", (req, res) => res.json(corsOptions)); // TODO: remove
+// app.get("/", (req, res) => res.json(corsOptions)); // TODO: remove
 app.use("/api", routes);
 
 module.exports = app;
