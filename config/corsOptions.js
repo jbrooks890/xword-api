@@ -21,4 +21,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+console.log("allowed origins:", allowedOrigins, "\ncors config:", corsOptions);
+
 module.exports = { corsOptions };
