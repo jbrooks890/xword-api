@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const routes = require("./routes");
 
 const app = express();
-console.log("corsOptions:", corsOptions);
 
 // app.use(cors());
 app.use(cors(corsOptions));
