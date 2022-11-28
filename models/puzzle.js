@@ -11,9 +11,10 @@ const Puzzle = new Schema(
     rows: { type: Number, required: true },
     version: { type: Number, required: true },
     editorMode: {
-      active: { type: Boolean, required: true },
-      phase: { type: Number, required: true },
+      active: { type: Boolean, default: false, required: true },
+      phase: { type: Number, default: 0, required: true },
     },
+    featured: { type: Boolean, default: false },
     answerKey: { type: Map, of: String },
     answers: [
       {
@@ -24,7 +25,7 @@ const Puzzle = new Schema(
         hint: { type: String, required: true },
       },
     ],
-    likes: { type: Number, required: false },
+    likes: { type: Number, default: 0, required: false },
     comments: [
       { type: Schema.Types.ObjectId, ref: "comment", required: false },
     ],

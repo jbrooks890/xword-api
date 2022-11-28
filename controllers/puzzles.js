@@ -1,4 +1,5 @@
 const Puzzle = require("../models/puzzle");
+const User = require("../models/user");
 
 const getAllPuzzles = async (req, res) => {
   try {
@@ -22,12 +23,15 @@ const getPuzzle = async (req, res) => {
 };
 
 const createPuzzle = async (req, res) => {
+  console.log(req.body);
+  const { username } = req.body;
   try {
-    const puzzle = await new Puzzle({ ...req.body, likes: 0, comments: [] });
-    await puzzle.save();
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ error: "Bad user" });
+    const puzzle = await Puzzle.create({ ...req.body, author: user._id });
     return res.status(201).json({ puzzle });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: "TEST", error: err.message });
   }
 };
 
