@@ -22,7 +22,7 @@ const main = async () => {
 
   const puzzleDB = await Puzzle.insertMany(
     puzzles.map(puzzle => {
-      return { ...puzzle, author: master._id };
+      return { ...puzzle, author: master._id, featured: true };
     })
   );
 
