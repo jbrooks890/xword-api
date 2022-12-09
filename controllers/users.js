@@ -91,14 +91,14 @@ const getUserByUsername = async (req, res) => {
   }
 };
 
-// <><><><><><><><><> VALIDATE USER (on login) <><><><><><><><><>
+// <><><><><><><><><> LOGIN <><><><><><><><><>
 
 const login = async (req, res) => {
   // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ message: "Username and password required." });
-  console.log({ username });
+  // console.log({ username });
 
   const user = await User.findOne({ username });
   if (!user) return res.status(400).send("User does not exist.");
@@ -107,7 +107,7 @@ const login = async (req, res) => {
     if (await bcrypt.compare(password, user.password)) {
       const accessToken = generateToken(user);
       const refreshToken = jwt.sign({ username }, REFRESH_TOKEN, {
-        expiresIn: "1d",
+        expiresIn: "15d",
       });
       user.refreshToken = refreshToken;
       user.save();
