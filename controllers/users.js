@@ -101,7 +101,7 @@ const login = async (req, res) => {
   // console.log({ username });
 
   const user = await User.findOne({ username });
-  if (!user) return res.status(400).send("User does not exist.");
+  if (!user) return res.status(400).json({ message: "User does not exist." });
 
   try {
     if (await bcrypt.compare(password, user.password)) {
@@ -110,18 +110,18 @@ const login = async (req, res) => {
         expiresIn: "15d",
       });
       user.refreshToken = refreshToken;
-      user.save();
+      await user.save();
       res.cookie("jwt", refreshToken, {
         httpOnly: true, // inaccessible with json
         maxAge: 24 * 60 * 60 * 1000,
       });
       // res.send();
-      res.status(201).json({ accessToken });
+      return res.status(201).json({ accessToken });
     } else {
-      req.status(401).json({ message: "Invalid user" });
+      return req.status(401).json({ message: "Invalid user" });
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 
