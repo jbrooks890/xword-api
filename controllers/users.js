@@ -118,7 +118,7 @@ const login = async (req, res) => {
       // res.send();
       return res.status(201).json({ accessToken });
     } else {
-      return req.status(401).json({ message: "Invalid user" });
+      return res.status(401).json({ message: "Invalid user" });
     }
   } catch (err) {
     return res.status(500).json({ error: err.message });
