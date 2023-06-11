@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 
 const generateToken = user => {
-  const { username, firstName, lastName, roles: $roles } = user;
+  const { username, firstName, lastName, roles: $roles, progress } = user;
   const roles = Object.values($roles);
   return jwt.sign(
-    { credentials: { username, firstName, lastName, roles } },
+    { credentials: { username, firstName, lastName, roles, progress } },
     ACCESS_TOKEN,
     {
       expiresIn: "15m", // TODO: expires ==> 15m
