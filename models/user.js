@@ -1,16 +1,14 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
-const { ObjectID } = Schema.Types;
-
-const userRoles = { user: 8737, admin: 2366, editor: 3348 };
+const { Schema } = mongoose,
+  { ObjectId } = Schema.Types;
 
 const Game = new Schema(
   {
-    puzzle: {
-      type: ObjectID,
-      ref: "puzzle",
-    },
-    game: {},
+    puzzle: { type: ObjectId, ref: "puzzle" },
+    input: { type: Map, of: String, required: true },
+    assists: [String],
+    startTime: String,
+    lastSave: { type: Date, required: true },
   },
   { timestamps: true }
 );
@@ -26,7 +24,7 @@ const User = new Schema(
       type: [{ type: Number, enum: Object.values(userRoles) }],
       default: [8737],
     },
-    progress: [Game],
+    record: [Game],
     refreshToken: String,
   },
   { timestamps: true }

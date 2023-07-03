@@ -1,4 +1,5 @@
 # PREVENT FRONT END (CLIENT) FROM BEING DEPLOYED WITH BACKEND
+/crossword
 /crossword-puzzle
 
 /node_modules
