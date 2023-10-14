@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose,
   { ObjectId } = Schema.Types;
 
+const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
+
 const Game = new Schema(
   {
     puzzle: { type: ObjectId, ref: "puzzle" },
@@ -22,7 +24,7 @@ const User = new Schema(
     email: { type: String, required: true },
     roles: {
       type: [{ type: Number, enum: Object.values(userRoles) }],
-      default: [8737],
+      default: [userRoles.User],
     },
     record: [Game],
     refreshToken: String,
