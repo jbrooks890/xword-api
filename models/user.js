@@ -15,6 +15,17 @@ const Game = new Schema(
   { timestamps: true }
 );
 
+const Draft = new Schema(
+  {
+    puzzle: { type: ObjectId, ref: "puzzle", required: true },
+    wordBank: { type: Map, of: String, required: true },
+    wordList: { type: [String], required: true }, // TODO
+    startTime: { type: Date, required: true },
+    lastSave: { type: Date, required: true },
+  },
+  { timestamps: true }
+);
+
 const User = new Schema(
   {
     username: { type: String, required: true },
@@ -27,6 +38,7 @@ const User = new Schema(
       default: [userRoles.User],
     },
     record: [Game],
+    creations: [Draft],
     refreshToken: String,
   },
   { timestamps: true }

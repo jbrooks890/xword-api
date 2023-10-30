@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { ObjectId } = Schema.Types;
 
 const Puzzle = new Schema(
   {
-    author: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    author: { type: ObjectId, ref: "user", required: true },
     name: { type: String, required: true },
     type: { type: String, required: true },
     description: { type: String, required: true },
@@ -14,6 +15,7 @@ const Puzzle = new Schema(
       active: { type: Boolean, default: false, required: true },
       phase: { type: Number, default: 0, required: true },
     },
+    isDraft: { type: Boolean, default: true },
     featured: { type: Boolean, default: false },
     answerKey: { type: Map, of: String },
     answers: [
@@ -25,10 +27,8 @@ const Puzzle = new Schema(
         hint: { type: String, required: true },
       },
     ],
-    likes: [{ type: Schema.Types.ObjectId, ref: "user", required: false }],
-    comments: [
-      { type: Schema.Types.ObjectId, ref: "comment", required: false },
-    ],
+    likes: [{ type: ObjectId, ref: "user", required: false }],
+    comments: [{ type: ObjectId, ref: "comment", required: false }],
     tags: [String],
   },
   { timestamps: true }
