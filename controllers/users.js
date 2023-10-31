@@ -123,7 +123,7 @@ const login = async (req, res) => {
       });
       user.refreshToken = refreshToken;
       await user.save();
-      console.log("SUCCESS!!");
+      // console.log("SUCCESS!!");
       // console.log({ user, password });
       res.cookie("jwt", refreshToken, {
         httpOnly: true, // inaccessible with json
@@ -182,13 +182,15 @@ const authenticate = (req, res, next) => {
 
 const refreshAuth = async (req, res) => {
   // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
-  const cookies = req.cookies;
+  const { cookies } = req;
+  // console.log({ cookies });
   if (!cookies?.jwt) return res.sendStatus(401);
   // console.log(cookies.jwt);
 
   const refreshToken = cookies.jwt;
 
   const user = await User.findOne({ refreshToken });
+  // console.log({ user });
 
   if (!user) return res.sendStatus(403); // FORBIDDEN
   // console.log("\n$$$ USER:", user, "\n");
