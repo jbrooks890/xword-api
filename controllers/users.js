@@ -5,10 +5,21 @@ const jwt = require("jsonwebtoken");
 const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 
 const generateToken = user => {
-  const { username, firstName, lastName, roles: $roles, progress } = user;
-  const roles = Object.values($roles);
+  const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
+
+  // console.log({ user });
+  const { username, firstName, lastName, roles } = user;
+  // const roles = Object.values($roles) ?? [userRoles.User];
+  // console.log({ roles });
   return jwt.sign(
-    { credentials: { username, firstName, lastName, roles, progress } },
+    {
+      credentials: {
+        username,
+        firstName,
+        lastName,
+        roles: roles ? Object.values(roles) : [userRoles.User],
+      },
+    },
     ACCESS_TOKEN,
     {
       expiresIn: "15m", // TODO: expires ==> 15m
@@ -106,11 +117,14 @@ const login = async (req, res) => {
   try {
     if (await bcrypt.compare(password, user.password)) {
       const accessToken = generateToken(user);
+      // console.log({ accessToken });
       const refreshToken = jwt.sign({ username }, REFRESH_TOKEN, {
         expiresIn: "15d",
       });
       user.refreshToken = refreshToken;
       await user.save();
+      console.log("SUCCESS!!");
+      // console.log({ user, password });
       res.cookie("jwt", refreshToken, {
         httpOnly: true, // inaccessible with json
         maxAge: 24 * 60 * 60 * 1000,
@@ -121,6 +135,7 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid user" });
     }
   } catch (err) {
+    console.log({ err });
     return res.status(500).json({ error: err.message });
   }
 };
