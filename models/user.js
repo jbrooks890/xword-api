@@ -38,7 +38,7 @@ const User = new Schema(
       default: [userRoles.User],
     },
     record: [Game],
-    creations: [Draft],
+    drafts: { type: [Draft], max: 3 },
     refreshToken: String,
   },
   { timestamps: true }

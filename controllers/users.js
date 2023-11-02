@@ -1,8 +1,11 @@
 const User = require("../models/user");
+const Puzzle = require("../models/puzzle");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
+
+// <><><><><><><><><> GENERATE TOKEN <><><><><><><><><>
 
 const generateToken = user => {
   const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
@@ -218,6 +221,37 @@ const verifyRoles = (...allowedRoles) => {
   };
 };
 
+// <><><><><><><><><> SAVE DRAFT <><><><><><><><><>
+
+const saveDraft = async (req, res) => {
+  const {
+    params: { username },
+    body: { draft },
+  } = req;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ error: "Bad user" });
+    if (user.creations.length >= 3)
+      return res
+        .status(401)
+        .json({ error: "Max number of puzzle drafts has been reached!" });
+    const puzzle = await Puzzle.create({
+      ...draft.puzzle,
+      author: user._id,
+      isDraft: true,
+    });
+    if (!puzzle) return res.status(400).send("Puzzle draft has errors");
+    user.drafts.push({
+      ...draft,
+      puzzle: puzzle._id,
+      lastSave: puzzle.createdAt ?? new Date(),
+    });
+    return res.sendStatus(201);
+  } catch (err) {
+    return res.status(501).json({ error: err.message });
+  }
+};
+
 // ----------------------------------------------------------------
 // <><><><><><><><><><><><><><> EXPORT <><><><><><><><><><><><><><>
 // ----------------------------------------------------------------
@@ -232,4 +266,5 @@ module.exports = {
   refreshAuth,
   deAuth,
   verifyRoles,
+  saveDraft,
 };

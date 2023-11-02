@@ -2,15 +2,22 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
+function isDraft() {
+  return this.isDraft;
+}
+
 const Puzzle = new Schema(
   {
     author: { type: ObjectId, ref: "user", required: true },
-    name: { type: String, required: true },
+    name: {
+      type: String,
+      required: !isDraft,
+    },
     type: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String, required: !isDraft },
     cols: { type: Number, required: true },
     rows: { type: Number, required: true },
-    version: { type: Number, required: true },
+    version: { type: Number, required: true, default: 0.1 },
     editorMode: {
       active: { type: Boolean, default: false, required: true },
       phase: { type: Number, default: 0, required: true },
