@@ -9,7 +9,7 @@ const Game = new Schema(
     puzzle: { type: ObjectId, ref: "puzzle" },
     input: { type: Map, of: String, required: true },
     assists: [String],
-    startTime: String,
+    startTime: { type: Date, required: true },
     lastSave: { type: Date, required: true },
   },
   { timestamps: true }

@@ -6,6 +6,17 @@ function isDraft() {
   return this.isDraft;
 }
 
+const Review = {
+  author: { type: ObjectId, ref: "user", required: true },
+  rating: {
+    type: Number,
+    min: 0,
+    max: 5,
+    required: true,
+  },
+  review: String,
+};
+
 const Puzzle = new Schema(
   {
     author: { type: ObjectId, ref: "user", required: true },
@@ -23,6 +34,7 @@ const Puzzle = new Schema(
       phase: { type: Number, default: 0, required: true },
     },
     isDraft: { type: Boolean, default: true },
+    isMature: { type: Boolean, default: false },
     featured: { type: Boolean, default: false },
     answerKey: { type: Map, of: String },
     answers: [
@@ -36,6 +48,7 @@ const Puzzle = new Schema(
     ],
     likes: [{ type: ObjectId, ref: "user", required: false }],
     comments: [{ type: ObjectId, ref: "comment", required: false }],
+    reviews: [Review],
     tags: [String],
   },
   { timestamps: true }

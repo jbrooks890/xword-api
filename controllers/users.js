@@ -10,10 +10,7 @@ const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 const generateToken = user => {
   const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
 
-  // console.log({ user });
-  const { username, firstName, lastName, roles } = user;
-  // const roles = Object.values($roles) ?? [userRoles.User];
-  // console.log({ roles });
+  const { username, firstName, lastName, roles, record, drafts } = user;
   return jwt.sign(
     {
       credentials: {
@@ -21,6 +18,8 @@ const generateToken = user => {
         firstName,
         lastName,
         roles: roles ? Object.values(roles) : [userRoles.User],
+        record,
+        drafts,
       },
     },
     ACCESS_TOKEN,
@@ -112,7 +111,6 @@ const login = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ message: "Username and password required." });
-  // console.log({ username });
 
   const user = await User.findOne({ username });
   if (!user) return res.status(400).json({ message: "User does not exist." });
@@ -120,19 +118,15 @@ const login = async (req, res) => {
   try {
     if (await bcrypt.compare(password, user.password)) {
       const accessToken = generateToken(user);
-      // console.log({ accessToken });
       const refreshToken = jwt.sign({ username }, REFRESH_TOKEN, {
         expiresIn: "15d",
       });
       user.refreshToken = refreshToken;
       await user.save();
-      // console.log("SUCCESS!!");
-      // console.log({ user, password });
       res.cookie("jwt", refreshToken, {
         httpOnly: true, // inaccessible with json
         maxAge: 24 * 60 * 60 * 1000,
       });
-      // res.send();
       return res.status(201).json({ accessToken });
     } else {
       return res.status(401).json({ message: "Invalid user" });
@@ -223,7 +217,7 @@ const verifyRoles = (...allowedRoles) => {
 
 // <><><><><><><><><> SAVE DRAFT <><><><><><><><><>
 
-const saveDraft = async (req, res) => {
+const createDraft = async (req, res) => {
   const {
     params: { username },
     body: { draft },
@@ -266,5 +260,5 @@ module.exports = {
   refreshAuth,
   deAuth,
   verifyRoles,
-  saveDraft,
+  createDraft,
 };
