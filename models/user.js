@@ -10,7 +10,6 @@ const Game = new Schema(
     input: { type: Map, of: String, required: true },
     assists: [String],
     startTime: { type: Date, required: true },
-    lastSave: { type: Date, required: true },
   },
   { timestamps: true }
 );
@@ -21,7 +20,6 @@ const Draft = new Schema(
     wordBank: { type: Map, of: String, required: true },
     wordList: { type: [String], required: true }, // TODO
     startTime: { type: Date, required: true },
-    lastSave: { type: Date, required: true },
   },
   { timestamps: true }
 );

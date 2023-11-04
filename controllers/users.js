@@ -217,7 +217,32 @@ const verifyRoles = (...allowedRoles) => {
 
 // <><><><><><><><><> SAVE DRAFT <><><><><><><><><>
 
-const createDraft = async (req, res) => {
+// const saveDraft = async (req, res) => {
+//   const {
+//     params: { username },
+//     body: { draft },
+//   } = req;
+//   try {
+//     const user = await User.findOne({ username });
+//     if (!user) return res.status(401).json({ error: "Bad user" });
+//     if (user.drafts.length >= 3)
+//       return res
+//         .status(401)
+//         .json({ error: "Max number of puzzle drafts has been reached!" });
+//     const existing = user.drafts?.findIndex(prev => prev._id === draft._id);
+//     if (existing >= 0) {
+//       user.drafts[existing] = draft;
+//     } else {
+//       user.drafts.push(draft);
+//     }
+//     await user.save();
+//     console.log({ draft: user.drafts[existing] });
+//     return res.status(201).json({ drafts: user.drafts });
+//   } catch (err) {
+//     return res.status(501).json({ error: err.message });
+//   }
+// };
+const saveDraft = async (req, res) => {
   const {
     params: { username },
     body: { draft },
@@ -225,26 +250,47 @@ const createDraft = async (req, res) => {
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
-    if (user.creations.length >= 3)
+    if (user.drafts.length >= 3)
       return res
         .status(401)
         .json({ error: "Max number of puzzle drafts has been reached!" });
-    const puzzle = await Puzzle.create({
-      ...draft.puzzle,
-      author: user._id,
-      isDraft: true,
-    });
+    const puzzleDraft = await Puzzle.findById(draft.puzzle._id);
+    let puzzle;
+    if (puzzleDraft) {
+      puzzleDraft = draft.puzzle;
+      await puzzleDraft.save();
+      puzzle = puzzleDraft;
+    } else {
+      puzzle = await Puzzle.create({
+        ...draft.puzzle,
+        author: user._id,
+        isDraft: true,
+      });
+    }
     if (!puzzle) return res.status(400).send("Puzzle draft has errors");
-    user.drafts.push({
-      ...draft,
-      puzzle: puzzle._id,
-      lastSave: puzzle.createdAt ?? new Date(),
-    });
-    return res.sendStatus(201);
+    console.log({ puzzle });
+    const existing = user.drafts?.findIndex(draft => draft._id === puzzle._id);
+    if (existing >= 0) {
+      user.drafts[existing] = {
+        ...draft,
+        puzzle: puzzle._id,
+      };
+    } else {
+      user.drafts.push({
+        ...draft,
+        puzzle: puzzle._id,
+      });
+    }
+    await user.save();
+    return res.status(201).json({ drafts: user.drafts });
   } catch (err) {
     return res.status(501).json({ error: err.message });
   }
 };
+
+// <><><><><><><><><> PUBLISH DRAFT <><><><><><><><><>
+
+const publishDraft = () => {};
 
 // ----------------------------------------------------------------
 // <><><><><><><><><><><><><><> EXPORT <><><><><><><><><><><><><><>
@@ -260,5 +306,5 @@ module.exports = {
   refreshAuth,
   deAuth,
   verifyRoles,
-  createDraft,
+  saveDraft,
 };

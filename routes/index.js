@@ -20,7 +20,7 @@ const {
   refreshAuth,
   deAuth,
   verifyRoles,
-  createDraft,
+  saveDraft,
 } = require("../controllers");
 const {
   user_roles: { Admin, Editor, User },
@@ -48,7 +48,7 @@ router.post("/users", createUser);
 router.get("/refresh", refreshAuth);
 router.get("/logout", deAuth);
 router.get("/users/:username", getUserByUsername);
-router.post("/users/:username/save-draft", createDraft);
+router.post("/users/:username/save-draft", saveDraft);
 
 // ------------ AUTH ------------
 router.use(authenticate); // <=== GATEKEEPER
