@@ -245,8 +245,10 @@ const verifyRoles = (...allowedRoles) => {
 const saveDraft = async (req, res) => {
   const {
     params: { username },
-    body: { draft },
+    body: draft,
   } = req;
+
+  console.log({ draft });
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
@@ -254,9 +256,13 @@ const saveDraft = async (req, res) => {
       return res
         .status(401)
         .json({ error: "Max number of puzzle drafts has been reached!" });
+
     const puzzleDraft = await Puzzle.findById(draft.puzzle._id);
+    // console.log("SUCCESS!!!!");
+    // console.log({ puzzleDraft });
     let puzzle;
     if (puzzleDraft) {
+      // console.log({ puzzleDraft });
       puzzleDraft = draft.puzzle;
       await puzzleDraft.save();
       puzzle = puzzleDraft;

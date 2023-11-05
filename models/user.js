@@ -18,7 +18,6 @@ const Draft = new Schema(
   {
     puzzle: { type: ObjectId, ref: "puzzle", required: true },
     wordBank: { type: Map, of: String, required: true },
-    wordList: { type: [String], required: true }, // TODO
     startTime: { type: Date, required: true },
   },
   { timestamps: true }
