@@ -258,11 +258,8 @@ const saveDraft = async (req, res) => {
         .json({ error: "Max number of puzzle drafts has been reached!" });
 
     const puzzleDraft = await Puzzle.findById(draft.puzzle._id);
-    // console.log("SUCCESS!!!!");
-    // console.log({ puzzleDraft });
     let puzzle;
     if (puzzleDraft) {
-      // console.log({ puzzleDraft });
       puzzleDraft = draft.puzzle;
       await puzzleDraft.save();
       puzzle = puzzleDraft;
