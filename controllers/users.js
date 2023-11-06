@@ -291,9 +291,50 @@ const saveDraft = async (req, res) => {
   }
 };
 
+// <><><><><><><><><> CREATE DRAFT <><><><><><><><><>
+const createDraft = async (req, res) => {
+  const {
+    params: { username },
+    body: draft,
+  } = req;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ error: "Bad user" });
+    if (user.drafts.length >= 3)
+      return res
+        .status(401)
+        .json({ error: "Max number of puzzle drafts has been reached!" });
+    // const puzzle = await Puzzle.create({
+    //   ...draft.puzzle,
+    //   author: user._id,
+    //   isDraft: true,
+    // });
+    // if (!puzzle) return res.status(401).send("Puzzle has errors!");
+    // console.log({ puzzle: draft.puzzle });
+    const { author, comments, likes, ...puzzle } = draft.puzzle;
+    const prev = user.drafts;
+    console.log({ puzzle });
+    user.drafts[firstEmpty] = { ...draft, puzzle };
+    await user.save();
+    // const [newDraft] = prev.length
+    //   ? user.drafts.filter(draft => !prev.includes(draft))
+    //   : user.drafts;
+    const newDraft = user.drafts.find(draft => !prev.includes(draft));
+    console.log({ newDraft });
+    return res.status(201).json({ draft: user.drafts[firstEmpty] });
+  } catch (err) {
+    return res.status(501).json({ error: err.message });
+  }
+};
+
 // <><><><><><><><><> PUBLISH DRAFT <><><><><><><><><>
 
-const publishDraft = () => {};
+const publishDraft = () => {
+  const {
+    params: { username },
+    body: draft,
+  } = req;
+};
 
 // ----------------------------------------------------------------
 // <><><><><><><><><><><><><><> EXPORT <><><><><><><><><><><><><><>
@@ -310,4 +351,5 @@ module.exports = {
   deAuth,
   verifyRoles,
   saveDraft,
+  createDraft,
 };

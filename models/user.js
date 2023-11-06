@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose,
   { ObjectId } = Schema.Types;
+const Puzzle = require("../models/puzzle");
+
+// console.log({ puzzle: Puzzle.schema });
 
 const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
 
 const Game = new Schema(
   {
-    puzzle: { type: ObjectId, ref: "puzzle" },
+    puzzle: { type: ObjectId, ref: "puzzle", required: true },
     input: { type: Map, of: String, required: true },
     assists: [String],
     startTime: { type: Date, required: true },
@@ -16,7 +19,25 @@ const Game = new Schema(
 
 const Draft = new Schema(
   {
-    puzzle: { type: ObjectId, ref: "puzzle", required: true },
+    puzzle: {
+      name: String,
+      type: { type: String, default: "crossword" },
+      description: String,
+      cols: { type: Number, required: true },
+      rows: { type: Number, required: true },
+      version: { type: Number, default: 0.1 },
+      answerKey: { type: Map, of: String },
+      answers: [
+        {
+          name: { type: String, required: true },
+          dir: { type: String, required: true },
+          group: [{ type: String, required: true }],
+          sum: { type: String, required: true },
+          hint: String,
+        },
+      ],
+      tags: [String],
+    },
     wordBank: { type: Map, of: String, required: true },
     startTime: { type: Date, required: true },
   },
@@ -35,7 +56,10 @@ const User = new Schema(
       default: [userRoles.User],
     },
     record: [Game],
-    drafts: { type: [Draft], max: 3 },
+    drafts: {
+      type: [Draft],
+      max: 3,
+    },
     refreshToken: String,
   },
   { timestamps: true }

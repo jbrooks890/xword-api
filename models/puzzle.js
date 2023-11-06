@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-function isDraft() {
-  return this.isDraft;
+function isNotDraft() {
+  return !this.isDraft;
 }
 
 const Review = {
@@ -22,16 +22,23 @@ const Puzzle = new Schema(
     author: { type: ObjectId, ref: "user", required: true },
     name: {
       type: String,
-      required: !isDraft,
+      required: function () {
+        return !this.isDraft;
+      },
     },
     type: { type: String, required: true },
-    description: { type: String, required: !isDraft },
+    description: {
+      type: String,
+      required: function () {
+        return !this.isDraft;
+      },
+    },
     cols: { type: Number, required: true },
     rows: { type: Number, required: true },
     version: { type: Number, required: true, default: 0.1 },
     editorMode: {
-      active: { type: Boolean, default: false, required: true },
-      phase: { type: Number, default: 0, required: true },
+      active: { type: Boolean, default: false },
+      phase: { type: Number, default: 0 },
     },
     isDraft: { type: Boolean, default: true },
     isMature: { type: Boolean, default: false },
@@ -43,7 +50,13 @@ const Puzzle = new Schema(
         dir: { type: String, required: true },
         group: [{ type: String, required: true }],
         sum: { type: String, required: true },
-        hint: { type: String, required: true },
+        hint: {
+          type: String,
+          required: function () {
+            // console.log({ test: this.parent() });
+            return !this.parent().isDraft;
+          },
+        },
       },
     ],
     likes: [{ type: ObjectId, ref: "user", required: false }],

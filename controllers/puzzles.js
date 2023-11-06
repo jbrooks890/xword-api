@@ -1,9 +1,9 @@
 const Puzzle = require("../models/puzzle");
 const User = require("../models/user");
 
-const getAllPuzzles = async (req, res) => {
+const getAllPuzzles = async ({ query, ...req }, res) => {
   try {
-    const puzzles = await Puzzle.find({});
+    const puzzles = await Puzzle.find(query);
     return res.status(200).json({ puzzles });
   } catch (err) {
     return res.status(500).json({ error: err.message });
