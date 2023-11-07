@@ -47,13 +47,12 @@ const Puzzle = new Schema(
     answers: [
       {
         name: { type: String, required: true },
-        dir: { type: String, required: true },
-        group: [{ type: String, required: true }],
+        dir: { type: String, enum: ["across", "down"], required: true },
+        group: [String],
         sum: { type: String, required: true },
-        hint: {
+        clue: {
           type: String,
           required: function () {
-            // console.log({ test: this.parent() });
             return !this.parent().isDraft;
           },
         },

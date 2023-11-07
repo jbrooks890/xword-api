@@ -304,24 +304,39 @@ const createDraft = async (req, res) => {
       return res
         .status(401)
         .json({ error: "Max number of puzzle drafts has been reached!" });
-    // const puzzle = await Puzzle.create({
-    //   ...draft.puzzle,
-    //   author: user._id,
-    //   isDraft: true,
-    // });
-    // if (!puzzle) return res.status(401).send("Puzzle has errors!");
-    // console.log({ puzzle: draft.puzzle });
-    const { author, comments, likes, ...puzzle } = draft.puzzle;
-    const prev = user.drafts;
-    console.log({ puzzle });
-    user.drafts[firstEmpty] = { ...draft, puzzle };
+    const { author, comments, likes, editorMode, ...puzzle } = draft.puzzle;
+    const prev = user.drafts.map(({ _id }) => _id);
+    user.drafts.push({
+      ...draft,
+      puzzle,
+    });
     await user.save();
-    // const [newDraft] = prev.length
-    //   ? user.drafts.filter(draft => !prev.includes(draft))
-    //   : user.drafts;
-    const newDraft = user.drafts.find(draft => !prev.includes(draft));
-    console.log({ newDraft });
-    return res.status(201).json({ draft: user.drafts[firstEmpty] });
+    const [newDraft] = prev.length
+      ? user.drafts.filter(({ _id }) => !prev.includes(_id))
+      : user.drafts;
+    // const newDraft = user.drafts.find(({ _id }) => !prev.includes(_id));
+    return res.status(201).json({ draft: newDraft });
+  } catch (err) {
+    return res.status(501).json({ error: err.message });
+  }
+};
+
+// <><><><><><><><><> UPDATE DRAFT <><><><><><><><><>
+const updateDraft = async (req, res) => {
+  const {
+    params: { username, draft_id },
+    body: draft,
+  } = req;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ error: "Bad user" });
+    const target = user.drafts.findIndex(({ _id }) => _id === draft_id);
+    if (target < 0)
+      return res.status(401).json({ error: "Draft doesn't exist" });
+    user.drafts[target] = draft;
+    await user.save();
+    return res.status(200).json({ draft: user.drafts[target] });
   } catch (err) {
     return res.status(501).json({ error: err.message });
   }
@@ -352,4 +367,5 @@ module.exports = {
   verifyRoles,
   saveDraft,
   createDraft,
+  updateDraft,
 };

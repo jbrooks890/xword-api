@@ -30,15 +30,24 @@ const Draft = new Schema(
       answers: [
         {
           name: { type: String, required: true },
-          dir: { type: String, required: true },
-          group: [{ type: String, required: true }],
+          dir: { type: String, enum: ["across", "down"], required: true },
+          group: [String],
           sum: { type: String, required: true },
-          hint: String,
+          clue: String,
         },
       ],
       tags: [String],
     },
-    wordBank: { type: Map, of: String, required: true },
+    wordBank: {
+      type: Map,
+      of: {
+        name: { type: String, required: true },
+        dir: { type: String, enum: ["across", "down"], required: true },
+        group: [String],
+        clue: String,
+      },
+      required: true,
+    },
     startTime: { type: Date, required: true },
   },
   { timestamps: true }
