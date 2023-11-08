@@ -24,7 +24,7 @@ const generateToken = user => {
     },
     ACCESS_TOKEN,
     {
-      expiresIn: "15m", // TODO: expires ==> 15m
+      expiresIn: "24h", // TODO: expires ==> 15m
     }
   );
 };
