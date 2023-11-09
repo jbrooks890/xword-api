@@ -23,6 +23,7 @@ const {
   saveDraft,
   createDraft,
   updateDraft,
+  deleteDraft,
 } = require("../controllers");
 const {
   user_roles: { Admin, Editor, User },
@@ -52,6 +53,7 @@ router.get("/logout", deAuth);
 router.get("/users/:username", getUserByUsername);
 router.post("/users/:username/drafts", createDraft);
 router.put("/users/:username/drafts/:draft_id", updateDraft);
+router.delete("/users/:username/drafts/:draft_id", deleteDraft);
 
 // ------------ AUTH ------------
 router.use(authenticate); // <=== GATEKEEPER

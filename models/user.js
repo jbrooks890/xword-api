@@ -48,7 +48,7 @@ const Draft = new Schema(
       },
       required: true,
     },
-    startTime: { type: Date, required: true },
+    // startTime: { type: Date, required: true },
   },
   { timestamps: true }
 );

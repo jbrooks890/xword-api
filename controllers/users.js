@@ -297,6 +297,7 @@ const createDraft = async (req, res) => {
     params: { username },
     body: draft,
   } = req;
+  console.log({ draft });
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
@@ -315,7 +316,23 @@ const createDraft = async (req, res) => {
       ? user.drafts.filter(({ _id }) => !prev.includes(_id))
       : user.drafts;
     // const newDraft = user.drafts.find(({ _id }) => !prev.includes(_id));
-    return res.status(201).json({ draft: newDraft });
+    return res.status(201).json({ draft: newDraft, drafts: user.drafts });
+  } catch (err) {
+    return res.status(501).json({ error: err.message });
+  }
+};
+
+// <><><><><><><><><> DELETE DRAFT <><><><><><><><><>
+const deleteDraft = async (req, res) => {
+  const { username, draft_id } = req.params;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ error: "Bad user" });
+
+    user.drafts = user.drafts.filter(({ _id }) => _id !== draft_id);
+    await user.save();
+    return res.send(200).json({ drafts: user.drafts });
   } catch (err) {
     return res.status(501).json({ error: err.message });
   }
@@ -368,4 +385,5 @@ module.exports = {
   saveDraft,
   createDraft,
   updateDraft,
+  deleteDraft,
 };
