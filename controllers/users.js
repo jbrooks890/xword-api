@@ -330,9 +330,17 @@ const deleteDraft = async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
 
-    user.drafts = user.drafts.filter(({ _id }) => _id !== draft_id);
+    const target = user.drafts.find(draft => draft.id === draft_id);
+    // const test = user.drafts.map(({ id }) => id);
+    // console.log("CHEESE", { test });
+    if (!target)
+      return res
+        .status(401)
+        .json({ error: `Draft with id [ ${draft_id} ] not found` });
+
+    user.drafts = user.drafts.filter(draft => draft !== target);
     await user.save();
-    return res.send(200).json({ drafts: user.drafts });
+    return res.status(200).json({ drafts: user.drafts });
   } catch (err) {
     return res.status(501).json({ error: err.message });
   }
