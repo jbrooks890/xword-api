@@ -295,20 +295,20 @@ const saveDraft = async (req, res) => {
 const createDraft = async (req, res) => {
   const {
     params: { username },
-    body: draft,
+    body,
   } = req;
-  console.log({ draft });
+  // console.log({ body });
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
     if (user.drafts.length >= 3)
       return res
         .status(401)
-        .json({ error: "Max number of puzzle drafts has been reached!" });
-    const { author, comments, likes, editorMode, ...puzzle } = draft.puzzle;
+        .send("Max number of puzzle drafts has been reached!");
+    const { author, comments, likes, editorMode, ...puzzle } = body.puzzle;
     const prev = user.drafts.map(({ _id }) => _id);
     user.drafts.push({
-      ...draft,
+      ...body,
       puzzle,
     });
     await user.save();
