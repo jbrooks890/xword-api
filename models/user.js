@@ -41,14 +41,13 @@ const Draft = new Schema(
     wordBank: {
       type: Map,
       of: {
-        name: { type: String, required: true },
-        dir: { type: String, enum: ["across", "down"], required: true },
+        name: String,
+        dir: { type: String, enum: ["across", "down"], default: "across" },
         group: [String],
         clue: String,
       },
       required: true,
     },
-    // startTime: { type: Date, required: true },
   },
   { timestamps: true }
 );
