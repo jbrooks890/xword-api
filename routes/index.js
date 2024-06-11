@@ -1,66 +1,21 @@
 const { Router } = require("express");
 const router = Router();
 const {
-  getAllPuzzles,
-  getPuzzle,
-  createPuzzle,
-  updatePuzzle,
-  deletePuzzle,
-  createComment,
-  getAllComments,
-  getCommentById,
   getCommentsByPuzzleId,
-  updateComment,
-  deleteComment,
-  createUser,
-  getAllUsers,
-  getUserByUsername,
-  login,
-  authenticate,
-  refreshAuth,
-  deAuth,
-  verifyRoles,
-  saveDraft,
-  createDraft,
-  updateDraft,
-  deleteDraft,
-  publishDraft,
 } = require("../controllers");
-const {
-  user_roles: { Admin, Editor, User },
-} = require("../config/user_roles");
-// const { Admin, Editor, User } = user_roles;
+const userRoutes = require("./users")
+const authRoutes = require("./auth")
+const puzzleRoutes = require("./puzzles")
+const commentRoutes = require("./comments")
 
 // ------------ ROOT ------------
 router.get("/", (req, res) => res.send("This is the root."));
-// ------------ PUZZLES ------------
-router.post("/puzzles", createPuzzle);
-router.get("/puzzles", getAllPuzzles);
-router.get("/puzzles/:id", getPuzzle);
-router.put("/puzzles/:id", updatePuzzle);
-router.delete("/puzzles/:id", deletePuzzle);
 // ------------ COMMENTS ------------
-router.get("/puzzle/comments/:id", getCommentsByPuzzleId);
-router.post("/comments", createComment);
-router.get("/comments", getAllComments);
-router.get("/comments/:id", getCommentById);
-router.put("/comments/:id", updateComment);
-router.delete("/comments/:id", deleteComment);
-// ------------ USER ------------
-router.post("/login", login);
-router.post("/users", createUser);
-router.get("/refresh", refreshAuth);
-router.get("/logout", deAuth);
-router.get("/users/:username", getUserByUsername);
-// ------------ DRAFTS ------------
-router.post("/users/:username/drafts", createDraft);
-router.put("/users/:username/drafts/:draft_id", updateDraft);
-router.delete("/users/:username/drafts/:draft_id", deleteDraft);
-router.post("/users/:username/drafts/:draft_id/publish", publishDraft);
+router.use("/",authRoutes)
+router.use("/users", userRoutes)
+router.use("/puzzles", puzzleRoutes)
+router.use("/comments",commentRoutes)
 
-// ------------ AUTH ------------
-router.use(authenticate); // <=== GATEKEEPER
-router.use(verifyRoles(Admin));
-router.get("/users", getAllUsers);
+router.get("/puzzle/comments/:id", getCommentsByPuzzleId);
 
 module.exports = router;

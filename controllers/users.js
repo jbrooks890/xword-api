@@ -1,38 +1,11 @@
 const User = require("../models/user");
-const Puzzle = require("../models/puzzle");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
+// <><><><><><><><><>[ CREATE NEW USER ]<><><><><><><><><>
 
-// <><><><><><><><><> GENERATE TOKEN <><><><><><><><><>
+const createUser = async ({ body }, res) => {
+  const { username, password, email } = body;
 
-const generateToken = user => {
-  const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
-
-  const { username, firstName, lastName, roles, record, drafts } = user;
-  return jwt.sign(
-    {
-      credentials: {
-        username,
-        firstName,
-        lastName,
-        roles: roles ? Object.values(roles) : [userRoles.User],
-        record,
-        drafts,
-      },
-    },
-    ACCESS_TOKEN,
-    {
-      expiresIn: "24h", // TODO: expires ==> 15m
-    }
-  );
-};
-
-// <><><><><><><><><> CREATE NEW USER <><><><><><><><><>
-
-const createUser = async (req, res) => {
-  const { username, password, email } = req.body;
   if (!username || !password || !email)
     return res
       .status(400)
@@ -44,7 +17,7 @@ const createUser = async (req, res) => {
   try {
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
-      ...req.body,
+      ...body,
       password: hash,
     });
     return res
@@ -92,7 +65,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// <><><><><><><><><> GET USER BY USERNAME <><><><><><><><><>
+// <><><><><><><><><>[ GET USER BY USERNAME ]<><><><><><><><><>
 
 const getUserByUsername = async (req, res) => {
   const { username } = req.params;
@@ -104,115 +77,22 @@ const getUserByUsername = async (req, res) => {
   }
 };
 
-// <><><><><><><><><> LOGIN <><><><><><><><><>
+// <><><><><><><><><>[ UPDATE USER ]<><><><><><><><><>
 
-const login = async (req, res) => {
-  // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
-  const { username, password } = req.body;
-  if (!username || !password)
-    return res.status(400).json({ message: "Username and password required." });
-
-  const user = await User.findOne({ username });
-  if (!user) return res.status(400).json({ message: "User does not exist." });
-
+const updateUser = async ({ body, params }, res) => {
+  const { username } = params;
   try {
-    if (await bcrypt.compare(password, user.password)) {
-      const accessToken = generateToken(user);
-      const refreshToken = jwt.sign({ username }, REFRESH_TOKEN, {
-        expiresIn: "15d",
-      });
-      user.refreshToken = refreshToken;
-      await user.save();
-      res.cookie("jwt", refreshToken, {
-        httpOnly: true, // inaccessible with json
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-      return res.status(201).json({ accessToken });
-    } else {
-      return res.status(401).json({ message: "Invalid user" });
-    }
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).send("User does not exist.");
+
+    Object.assign(user, body);
+    await user.save();
+
+    return res.status(200).json(user);
   } catch (err) {
-    console.log({ err });
-    return res.status(500).json({ error: err.message });
+    console.log(err);
+    return res.status(500).send(err);
   }
-};
-
-// <><><><><><><><><> DEAUTH REFRESH TOKEN (on logout) <><><><><><><><><>
-
-const deAuth = async (req, res) => {
-  const { cookies } = req;
-  if (!cookies?.jwt) return res.sendStatus(204);
-  const refreshToken = cookies.jwt;
-  const user = await User.findOne({ refreshToken });
-  if (!user) {
-    // NOTE: requires same OPTIONS it was set wtih, except 'maxAge' and expires
-    // TODO: delete access token on front end
-    res.clearCookie("jwt", { httpOnly: true });
-    return res.sendStatus(204); // NO CONTENT
-  }
-  // TODO: delete access token on front end
-  user.refreshToken = "";
-  await user.save();
-  res.clearCookie("jwt", { httpOnly: true }); //secure: truly - only serves on https
-  res.sendStatus(204);
-};
-
-// <><><><><><><><><> AUTHENTICATE TOKEN (MIDDLE) <><><><><><><><><>
-// middleware for protected routes
-
-const authenticate = (req, res, next) => {
-  const authHeader = req.headers.authorization || req.headers.Authorization; // Bearer <TOKEN>
-  if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401); // UNAUTHORIZED
-
-  const token = authHeader.split(" ")[1];
-  if (!token) return res.sendStatus(401); // UNAUTHORIZED
-
-  jwt.verify(token, ACCESS_TOKEN, (err, decoded) => {
-    if (err) return res.sendStatus(403); // FORBIDDEN
-    req.username = decoded.credentials.username;
-    req.roles = decoded.credentials.roles;
-    next();
-  });
-};
-
-// <><><><><><><><><> REFRESH AUTHORIZATION <><><><><><><><><>
-
-const refreshAuth = async (req, res) => {
-  // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
-  const { cookies } = req;
-  // console.log({ cookies });
-  if (!cookies?.jwt) return res.sendStatus(401);
-  // console.log(cookies.jwt);
-
-  const refreshToken = cookies.jwt;
-
-  const user = await User.findOne({ refreshToken });
-  // console.log({ user });
-
-  if (!user) return res.sendStatus(403); // FORBIDDEN
-  // console.log("\n$$$ USER:", user, "\n");
-
-  jwt.verify(refreshToken, REFRESH_TOKEN, (err, decoded) => {
-    if (err || user.username !== decoded.username) return res.sendStatus(403);
-    const accessToken = generateToken(user);
-    res.json({ accessToken });
-  });
-};
-
-// <><><><><><><><><> VERIFY ROLES (MIDDLE) <><><><><><><><><>
-
-const verifyRoles = (...allowedRoles) => {
-  return (req, res, next) => {
-    if (!req?.roles) return res.sendStatus(401); // UNAUTHORIZED
-    const rolesArr = [...allowedRoles];
-
-    const result = req.roles
-      .map(role => rolesArr.includes(role))
-      .find(val => val === true);
-
-    if (!result) return res.sendStatus(401); // UNAUTHORIZED
-    next();
-  };
 };
 
 // ----------------------------------------------------------------
@@ -224,9 +104,5 @@ module.exports = {
   createAdmin,
   getAllUsers,
   getUserByUsername,
-  login,
-  authenticate,
-  refreshAuth,
-  deAuth,
-  verifyRoles,
+  updateUser,
 };
