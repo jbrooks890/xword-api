@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose,
-  { ObjectId } = Schema.Types;
+  { ObjectId, Map } = Schema.Types;
 const Puzzle = require("../models/puzzle");
 
 // console.log({ puzzle: Puzzle.schema });
@@ -9,10 +9,11 @@ const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
 
 const Game = new Schema(
   {
-    puzzle: { type: ObjectId, ref: "puzzle", required: true },
+    // puzzle: { type: ObjectId, ref: "puzzle", required: true },
     input: { type: Map, of: String, required: true },
     assists: [String],
     startTime: { type: Date, required: true },
+    completeTime: Date,
   },
   { timestamps: true }
 );
@@ -63,7 +64,7 @@ const User = new Schema(
       type: [{ type: Number, enum: Object.values(userRoles) }],
       default: [userRoles.User],
     },
-    record: [Game],
+    record: { type: Map, of: Game },
     drafts: {
       type: [Draft],
       max: 3,

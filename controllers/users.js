@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Puzzle = require("../models/puzzle");
 const bcrypt = require("bcrypt");
 
 // <><><><><><><><><>[ CREATE NEW USER ]<><><><><><><><><>
@@ -95,6 +96,52 @@ const updateUser = async ({ body, params }, res) => {
   }
 };
 
+// <><><><><><><><><>[ GET USER RECORD ]<><><><><><><><><>
+const getUserRecord = async ({ body, params }, res) => {
+  const { username } = params;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).send("User does not exist.");
+
+    // const { puzzleId } = body;
+    const { record } = user;
+
+    return res.status(record.length ? 200 : 204).json({ record });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
+};
+
+// <><><><><><><><><>[ UPDATE USER RECORD ]<><><><><><><><><>
+
+const updateUserRecord = async ({ body, params }, res) => {
+  const { username } = params;
+  // console.log({ body });
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).send("User does not exist.");
+
+    const { puzzle: puzzleId, ...game } = body;
+    // console.log({ game });
+    const puzzle = await Puzzle.findById(puzzleId);
+    if (!puzzle) return res.status(404).send("Puzzle does not exist");
+
+    if (!user.record) user.record = new Map();
+    // const input = new Map(Object.entries(game.input));
+    // console.log({ input });
+
+    user.record.set(puzzleId, game);
+    // console.log({ record: user.record });
+    await user.save();
+
+    return res.status(200).json({ user });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
+};
+
 // ----------------------------------------------------------------
 // <><><><><><><><><><><><><><> EXPORT <><><><><><><><><><><><><><>
 // ----------------------------------------------------------------
@@ -105,4 +152,6 @@ module.exports = {
   getAllUsers,
   getUserByUsername,
   updateUser,
+  getUserRecord,
+  updateUserRecord,
 };
