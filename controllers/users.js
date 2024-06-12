@@ -127,7 +127,7 @@ const updateUserRecord = async ({ body, params }, res) => {
     const puzzle = await Puzzle.findById(puzzleId);
     if (!puzzle) return res.status(404).send("Puzzle does not exist");
 
-    if (!user.record) user.record = new Map();
+    if (!user.record || !(user.record instanceof Map)) user.record = new Map();
     // const input = new Map(Object.entries(game.input));
     // console.log({ input });
 
