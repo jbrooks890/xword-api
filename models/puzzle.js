@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-function isNotDraft() {
-  return !this.isDraft;
-}
-
 const Review = {
   author: { type: ObjectId, ref: "user", required: true },
   rating: {

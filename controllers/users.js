@@ -106,7 +106,7 @@ const getUserRecord = async ({ body, params }, res) => {
     // const { puzzleId } = body;
     const { record } = user;
 
-    return res.status(record.length ? 200 : 204).json({ record });
+    return res.status(Object.keys(record).length ? 200 : 204).json({ record });
   } catch (err) {
     console.log(err);
     return res.status(500).send(err);
