@@ -1,11 +1,10 @@
-const User = require("../models/user")
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 
-
-const generateToken = user => {
+const generateToken = (user) => {
   const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
 
   const { username, firstName, lastName, roles, record, drafts } = user;
@@ -16,7 +15,7 @@ const generateToken = user => {
         firstName,
         lastName,
         roles: roles ? Object.values(roles) : [userRoles.User],
-        record,
+        record: record.toJSON({ flattenMaps: true }),
         drafts,
       },
     },
@@ -130,8 +129,8 @@ const verifyRoles = (...allowedRoles) => {
     const rolesArr = [...allowedRoles];
 
     const result = req.roles
-      .map(role => rolesArr.includes(role))
-      .find(val => val === true);
+      .map((role) => rolesArr.includes(role))
+      .find((val) => val === true);
 
     if (!result) return res.sendStatus(401); // UNAUTHORIZED
     next();
@@ -139,9 +138,9 @@ const verifyRoles = (...allowedRoles) => {
 };
 
 module.exports = {
-login,
+  login,
   authenticate,
   refreshAuth,
   deAuth,
   verifyRoles,
-}
+};

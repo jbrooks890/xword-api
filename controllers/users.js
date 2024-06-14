@@ -104,7 +104,8 @@ const getUserRecord = async ({ body, params }, res) => {
     if (!user) return res.status(404).send("User does not exist.");
 
     // const { puzzleId } = body;
-    const { record } = user;
+    const record = user.record.toJSON({ flattenMaps: true });
+    // console.log(Object.fromEntries(...record));
 
     return res.status(Object.keys(record).length ? 200 : 204).json({ record });
   } catch (err) {

@@ -10,12 +10,20 @@ const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
 const Game = new Schema(
   {
     // puzzle: { type: ObjectId, ref: "puzzle", required: true },
-    input: { type: Map, of: String, required: true },
+    input: {
+      type: Map,
+      of: String,
+      required: true,
+    },
     assists: [String],
     startTime: { type: Date, required: true },
     completeTime: Date,
   },
-  { timestamps: true }
+  {
+    toObject: { virtuals: true, getters: true },
+    toJSON: { virtuals: true, getters: true },
+    timestamps: true,
+  }
 );
 
 const Draft = new Schema(
