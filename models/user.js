@@ -75,7 +75,7 @@ const User = new Schema(
     record: { type: Map, of: Game },
     drafts: {
       type: [Draft],
-      max: 3,
+      max: 10,
     },
     refreshToken: String,
   },
