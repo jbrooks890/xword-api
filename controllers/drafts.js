@@ -29,7 +29,9 @@ const saveDraft = async (req, res) => {
       });
     }
     if (!puzzle) return res.status(400).send("Puzzle draft has errors");
-    const existing = user.drafts?.findIndex(draft => draft._id === puzzle._id);
+    const existing = user.drafts?.findIndex(
+      (draft) => draft._id === puzzle._id
+    );
     if (existing >= 0) {
       user.drafts[existing] = {
         ...draft,
@@ -45,6 +47,19 @@ const saveDraft = async (req, res) => {
     return res.status(201).json({ drafts: user.drafts });
   } catch (err) {
     return res.status(501).json({ error: err.message });
+  }
+};
+
+// <><><><><><><><><> GET DRAFT <><><><><><><><><>
+const getUserDrafts = async ({ params: { username } }, res) => {
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(400).send("User does not exist.");
+    const { drafts } = user;
+    return res.status(200).json(drafts);
+  } catch (err) {
+    console.warn(err);
+    return res.sendStatus(500);
   }
 };
 
@@ -87,7 +102,7 @@ const deleteDraft = async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
 
-    const target = user.drafts.find(draft => draft.id === draft_id);
+    const target = user.drafts.find((draft) => draft.id === draft_id);
     // const test = user.drafts.map(({ id }) => id);
     // console.log("CHEESE", { test });
     if (!target)
@@ -95,7 +110,7 @@ const deleteDraft = async (req, res) => {
         .status(401)
         .json({ error: `Draft with id [ ${draft_id} ] not found` });
 
-    user.drafts = user.drafts.filter(draft => draft !== target);
+    user.drafts = user.drafts.filter((draft) => draft !== target);
     await user.save();
     return res.status(200).json({ drafts: user.drafts });
   } catch (err) {
@@ -136,7 +151,7 @@ const publishDraft = async () => {
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
-    const targetIndex = user.drafts.findIndex(draft => draft.id === draft_id);
+    const targetIndex = user.drafts.findIndex((draft) => draft.id === draft_id);
     if (targetIndex < 0)
       return res.status(404).json({ error: "Draft doesn't exist" });
     const newPuzzle = await Puzzle.create({ ...puzzle, author: user._id });
@@ -154,6 +169,7 @@ const publishDraft = async () => {
 
 module.exports = {
   saveDraft,
+  getUserDrafts,
   createDraft,
   updateDraft,
   deleteDraft,
