@@ -48,10 +48,9 @@ const Puzzle = new Schema(
         sum: { type: String, required: true },
         clue: {
           type: String,
-          required: function () {
-            return !this.parent().isDraft;
-          },
+          // required: true,
         },
+        hint: String,
       },
     ],
     likes: [{ type: ObjectId, ref: "user", required: false }],

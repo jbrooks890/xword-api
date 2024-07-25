@@ -11,33 +11,33 @@ const main = async () => {
   await Comment.deleteMany({});
 
   const topLvlComments = comments.filter(
-    comment => comment.ownerType === "puzzle"
+    (comment) => comment.ownerType === "puzzle"
   );
 
   const nestedComments = comments.filter(
-    comment => comment.ownerType !== "puzzle"
+    (comment) => comment.ownerType !== "puzzle"
   );
 
   const master = await User.findOne({ username: "jbrooks" });
 
   const puzzleDB = await Puzzle.insertMany(
-    puzzles.map(puzzle => {
+    puzzles.map((puzzle) => {
       return { ...puzzle, author: master._id, featured: true };
     })
   );
 
   const commentsDB = await Comment.insertMany(
-    topLvlComments.map(comment => {
+    topLvlComments.map((comment) => {
       let { owner } = comment;
-      owner = puzzleDB.find(entry => entry.name === owner)._id;
+      owner = puzzleDB.find((entry) => entry.name === owner)._id;
       return { ...comment, owner };
     })
   );
 
   for (let puzzle of puzzleDB) {
     const commentIDs = commentsDB
-      .filter(comment => comment.owner.equals(puzzle._id))
-      .map(comment => comment._id);
+      .filter((comment) => comment.owner.equals(puzzle._id))
+      .map((comment) => comment._id);
     puzzle.comments.push(...commentIDs);
     await puzzle.save();
   }
@@ -46,8 +46,58 @@ const main = async () => {
   console.log("SEEDING NEW VERSION OF PUZZLES");
 };
 
+const fixHintToClue = async () => {
+  try {
+    const res = await Puzzle.updateMany(
+      {},
+      {
+        $set: {
+          answers: {
+            $map: {
+              input: "$answers",
+              as: "answer",
+              in: {
+                $mergeObjects: ["$$answer", { TEST: 0 }],
+              },
+            },
+          },
+        },
+      }
+    );
+    console.log({ res });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const restoreHints = async () => {
+  try {
+    const $puzzles = await Puzzle.find({});
+    for (const $puzzle of $puzzles) {
+      const { answers } = puzzles.find(({ name }) => name === $puzzle.name);
+      console.log({ answers });
+      if (answers?.length) {
+        Object.assign($puzzle, {
+          answers: answers.map(({ hint, ...answer }) => ({
+            ...answer,
+            clue: hint,
+          })),
+          // likes: [],
+          // author: "6541438326af8baae27e909a",
+        });
+        await $puzzle.save({ timestamps: false });
+      }
+    }
+
+    console.log({ $puzzles });
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
 const run = async () => {
-  await main();
+  await restoreHints();
+  // await fixHintToClue();
   db.close();
 };
 
