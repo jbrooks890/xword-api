@@ -83,7 +83,8 @@ const restoreHints = async () => {
             clue: hint,
           })),
           // likes: [],
-          // author: "6541438326af8baae27e909a",
+          // author: "6541438326af8baae27e909a", // PC
+          // author: "63754e85c860e37a592256e6", // MAC
         });
         await $puzzle.save({ timestamps: false });
       }
