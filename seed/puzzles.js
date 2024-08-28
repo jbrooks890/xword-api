@@ -70,8 +70,10 @@ const fixHintToClue = async () => {
   }
 };
 
-const restoreHints = async () => {
+const restoreHints = async (email = "jbrooks890@gmail.com") => {
   try {
+    const user = await User.findOne({ email });
+    if (!user) throw new Error(`Could not find user with email: "${email}"`);
     const $puzzles = await Puzzle.find({});
     for (const $puzzle of $puzzles) {
       const { answers } = puzzles.find(({ name }) => name === $puzzle.name);
@@ -81,10 +83,8 @@ const restoreHints = async () => {
           answers: answers.map(({ hint, ...answer }) => ({
             ...answer,
             clue: hint,
+            author: user._id,
           })),
-          // likes: [],
-          // author: "6541438326af8baae27e909a", // PC
-          // author: "63754e85c860e37a592256e6", // MAC
         });
         await $puzzle.save({ timestamps: false });
       }
@@ -97,8 +97,30 @@ const restoreHints = async () => {
 };
 
 const run = async () => {
-  await restoreHints();
-  // await fixHintToClue();
+  const [operation, ...args] = process.argv.slice(2),
+    [arg1] = args;
+  const operations = "options/shrestoreHints/fixHintToClue".split("/");
+  const validOperationsMsg =
+    "\nValid operations:\n" +
+    operations.map((operation) => `- "${operation}"`).join("\n");
+
+  switch (operation) {
+    case "options":
+      console.log(validOperationsMsg);
+      break;
+    case "restoreHints":
+      await restoreHints(arg1);
+      break;
+    case "fixHintToClue":
+      await fixHintToClue();
+      break;
+    default:
+      console.warn(
+        `'${operation}' does not exist. Enter a valid operation.` +
+          validOperationsMsg +
+          "\n"
+      );
+  }
   db.close();
 };
 
