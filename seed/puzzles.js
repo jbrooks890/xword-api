@@ -99,7 +99,7 @@ const restoreHints = async (email = "jbrooks890@gmail.com") => {
 const run = async () => {
   const [operation, ...args] = process.argv.slice(2),
     [arg1] = args;
-  const operations = "options/shrestoreHints/fixHintToClue".split("/");
+  const operations = "options/restoreHints/fixHintToClue".split("/");
   const validOperationsMsg =
     "\nValid operations:\n" +
     operations.map((operation) => `- "${operation}"`).join("\n");

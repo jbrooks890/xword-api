@@ -15,7 +15,7 @@ const generateToken = (user) => {
         firstName,
         lastName,
         roles: roles ? Object.values(roles) : [userRoles.User],
-        record: record.toJSON({ flattenMaps: true }),
+        record: record?.toJSON({ flattenMaps: true }),
         drafts,
       },
     },
