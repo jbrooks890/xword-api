@@ -99,26 +99,28 @@ const authenticate = (req, res, next) => {
 
 // <><><><><><><><><> REFRESH AUTHORIZATION <><><><><><><><><>
 
-const refreshAuth = async (req, res) => {
-  // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
-  const { cookies } = req;
-  // console.log({ cookies });
-  if (!cookies?.jwt) return res.sendStatus(401);
-  // console.log(cookies.jwt);
-
+const refreshAuth = async ({ cookies }, res) => {
+  if (!cookies?.jwt) return res.status(401).json({ cookies }); // TODO: REMOVE
   const refreshToken = cookies.jwt;
+  try {
+    const user = await User.findOne({ refreshToken });
+    if (!user) return res.sendStatus(403); // FORBIDDEN
 
-  const user = await User.findOne({ refreshToken });
-  // console.log({ user });
-
-  if (!user) return res.sendStatus(403); // FORBIDDEN
-  // console.log("\n$$$ USER:", user, "\n");
-
-  jwt.verify(refreshToken, REFRESH_TOKEN, (err, decoded) => {
-    if (err || user.username !== decoded.username) return res.sendStatus(403);
-    const accessToken = generateToken(user);
-    res.json({ accessToken });
-  });
+    jwt.verify(refreshToken, REFRESH_TOKEN, (err, decoded) => {
+      if (err || user.username !== decoded.username) return res.sendStatus(403);
+      const accessToken = generateToken(user);
+      res.json({ accessToken });
+    });
+  } catch (err) {
+    const errMsg =
+      err instanceof Error
+        ? err.message
+        : typeof err === "string"
+        ? err
+        : undefined;
+    const response = res.status(500);
+    return typeof err === "object" ? response.json(err) : response.send(errMsg);
+  }
 };
 
 // <><><><><><><><><> VERIFY ROLES (MIDDLE) <><><><><><><><><>
