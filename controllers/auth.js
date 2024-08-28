@@ -30,6 +30,7 @@ const generateToken = (user) => {
 
 const login = async (req, res) => {
   // res.set("Access-Control-Allow-Origin", "*"); //TODO: REMOVE!!!
+  console.log({ ACCESS_TOKEN, REFRESH_TOKEN });
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ message: "Username and password required." });
