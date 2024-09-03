@@ -46,6 +46,7 @@ const login = async (req, res) => {
       await user.save();
       res.cookie("jwt", refreshToken, {
         httpOnly: true, // inaccessible with json
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
       return res.status(201).json({ accessToken });
