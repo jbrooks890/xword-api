@@ -129,7 +129,6 @@ const updateDraft = async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
     const targetIndex = user.drafts.findIndex(({ id }) => id === draft_id);
-    console.log({ draft });
     if (targetIndex < 0)
       return res.status(404).json({ error: "Draft doesn't exist" });
     Object.assign(user.drafts[targetIndex], draft);
