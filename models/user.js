@@ -79,7 +79,24 @@ const User = new Schema(
     },
     refreshToken: String,
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    virtuals: {
+      name: {
+        get() {
+          return `${this.firstName} ${this.lastName}`;
+        },
+      },
+    },
+    toJSON: { virtuals: true, getters: true },
+    toObject: { virtuals: true, getters: true },
+  }
 );
+
+User.virtual("puzzles", {
+  ref: "puzzle",
+  localField: "_id",
+  foreignField: "author",
+});
 
 module.exports = mongoose.model("user", User);

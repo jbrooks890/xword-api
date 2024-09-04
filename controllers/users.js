@@ -71,10 +71,13 @@ const getAllUsers = async (req, res) => {
 const getUserByUsername = async (req, res) => {
   const { username } = req.params;
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username })
+      .populate("puzzles")
+      .select(["-password", "-refreshToken"]);
     return res.status(200).json({ user });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    console.log(err);
+    return res.status(500).send(err.message);
   }
 };
 

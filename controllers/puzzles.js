@@ -10,15 +10,58 @@ const getAllPuzzles = async ({ query, ...req }, res) => {
   }
 };
 
+const getCatalog = async ({ query = "featured=true&limit=25" }, res) => {
+  try {
+    const puzzles = await Puzzle.find(query).select([
+      "_id",
+      "author",
+      "comments",
+      "description",
+      "likes",
+      "name",
+      "reviews",
+      "answerKey",
+      "size",
+      "tags",
+    ]);
+
+    return res.status(200).json(puzzles);
+  } catch (err) {
+    console.log({ err });
+    const response = res.status(500);
+    const errMsg =
+      err instanceof Error
+        ? err.message
+        : typeof err === "string"
+        ? err
+        : undefined;
+    errMsg ? response.send(errMsg) : response.json(err);
+    return response;
+  }
+};
+
 const getPuzzle = async (req, res) => {
   const { id } = req.params;
   try {
-    const puzzle = await Puzzle.findById(id).populate("comments");
+    const puzzle = await Puzzle.findById(id);
     return puzzle
       ? res.status(200).json({ puzzle })
       : res.status(404).send("Puzzle not found");
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    const response = res.status(500);
+    const errMsg =
+      err instanceof Error
+        ? err.message
+        : typeof err === "string"
+        ? err
+        : undefined;
+    if (errMsg) {
+      response.send(errMsg);
+    } else {
+      response.json(err);
+    }
+
+    return response;
   }
 };
 
@@ -59,6 +102,7 @@ const deletePuzzle = async (req, res) => {
 };
 
 module.exports = {
+  getCatalog,
   getAllPuzzles,
   getPuzzle,
   createPuzzle,

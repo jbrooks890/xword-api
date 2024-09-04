@@ -58,7 +58,17 @@ const Puzzle = new Schema(
     reviews: [Review],
     tags: [String],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    virtuals: {
+      size: {
+        get() {
+          return this.answerKey.size;
+        },
+      },
+    },
+    toJSON: { virtuals: true },
+  }
 );
 
 module.exports = mongoose.model("puzzle", Puzzle);

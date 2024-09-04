@@ -7,7 +7,8 @@ const { ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 const generateToken = (user) => {
   const userRoles = { User: 8737, Editor: 3348, Admin: 2366 };
 
-  const { username, firstName, lastName, roles, record, drafts } = user;
+  const { username, firstName, lastName, roles, record, drafts, puzzles } =
+    user;
   return jwt.sign(
     {
       credentials: {
@@ -17,6 +18,7 @@ const generateToken = (user) => {
         roles: roles ? Object.values(roles) : [userRoles.User],
         record: record?.toJSON({ flattenMaps: true }),
         drafts,
+        puzzles,
       },
     },
     ACCESS_TOKEN,
@@ -33,7 +35,7 @@ const login = async (req, res) => {
   if (!username || !password)
     return res.status(400).json({ message: "Username and password required." });
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username }).populate("puzzles");
   if (!user) return res.status(400).json({ message: "User does not exist." });
 
   try {
@@ -104,7 +106,7 @@ const refreshAuth = async ({ cookies }, res) => {
   if (!cookies?.jwt) return res.status(401).json({ cookies }); // TODO: REMOVE
   const refreshToken = cookies.jwt;
   try {
-    const user = await User.findOne({ refreshToken });
+    const user = await User.findOne({ refreshToken }).populate("puzzles");
     if (!user) return res.sendStatus(403); // FORBIDDEN
 
     jwt.verify(refreshToken, REFRESH_TOKEN, (err, decoded) => {
@@ -113,6 +115,7 @@ const refreshAuth = async ({ cookies }, res) => {
       res.json({ accessToken });
     });
   } catch (err) {
+    console.log(err);
     const errMsg =
       err instanceof Error
         ? err.message
