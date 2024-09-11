@@ -102,7 +102,7 @@ const deleteDraft = async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ error: "Bad user" });
 
-    const target = user.drafts.find((draft) => draft.id === draft_id);
+    const target = user.drafts.find(({ id }) => id === draft_id);
     // const test = user.drafts.map(({ id }) => id);
     // console.log("CHEESE", { test });
     if (!target)
@@ -149,10 +149,11 @@ const publishDraft = async () => {
 
   try {
     const user = await User.findOne({ username });
-    if (!user) return res.status(401).json({ error: "Bad user" });
-    const targetIndex = user.drafts.findIndex((draft) => draft.id === draft_id);
-    if (targetIndex < 0)
-      return res.status(404).json({ error: "Draft doesn't exist" });
+    if (!user)
+      return res.status(401).send(`User '${username}' does not exist.`);
+    const target = user.drafts.find((draft) => draft.id === draft_id);
+    if (!target) return res.status(404).json({ error: "Draft does not exist" });
+    const targetIndex = user.drafts.indexOf(target);
     const newPuzzle = await Puzzle.create({ ...puzzle, author: user._id });
     user.drafts[targetIndex] = null;
     await user.save();
